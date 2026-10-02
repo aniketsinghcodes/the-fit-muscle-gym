@@ -1,0 +1,117 @@
+---
+import { site } from "../data/site";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "THE FIT MUSCLE GYM | Gym in Dabauli West, Kanpur",
+  description = "THE FIT MUSCLE GYM in Mishri Lal Chauraha, Dabauli West, Kanpur. Build strength and transform with top machines, personal guidance by Krishna Gupta (5 yrs exp), and flexible plans starting at ₹600/mo.",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || "https://thefitmusclegym.com").toString();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ExerciseGym",
+  "name": site.name,
+  "description": description,
+  "url": canonicalURL,
+  "telephone": site.phone,
+  "image": "https://thefitmusclegym.com/images/gallery/community-celebration.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": site.address.street,
+    "addressLocality": site.address.city,
+    "addressRegion": site.address.state,
+    "postalCode": site.address.pincode,
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "26.4385",
+    "longitude": "80.3012"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "05:30",
+      "closes": "10:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "17:00",
+      "closes": "22:00"
+    }
+  ],
+  "priceRange": "₹600 - ₹5,500",
+  "sameAs": [
+    site.instagramUrl,
+    site.mapsUrl
+  ]
+};
+---
+
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#080808" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="business.business" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="THE FIT MUSCLE GYM" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:image" content="/images/gallery/community-celebration.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/images/gallery/community-celebration.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-[#080808] text-[#F5F2EA] selection:bg-[#C9B27C]/30 selection:text-[#F5F2EA] min-h-screen flex flex-col pb-20 lg:pb-0">
+    <!-- Accessible Skip to Content Link -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#C9B27C] focus:text-[#080808] focus:font-bold focus:rounded focus:outline-none"
+    >
+      Skip to main content
+    </a>
+
+    <slot />
+  </body>
+</html>

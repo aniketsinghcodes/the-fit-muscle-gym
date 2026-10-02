@@ -1,0 +1,50 @@
+---
+import { site } from "../data/site";
+---
+
+<section id="reviews" class="py-20 lg:py-24 bg-[#111111] border-b border-[#171717]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+        COMMUNITY VOICE
+      </span>
+      <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+        MEMBER REVIEWS
+      </h2>
+      <div class="w-16 h-1 bg-[#C9B27C] mx-auto mt-4 rounded-full"></div>
+    </div>
+
+    <!-- Authentic Empty-State / Coming Soon Card (No fabricated reviews!) -->
+    <div class="max-w-2xl mx-auto bg-[#171717] rounded-2xl border border-[#242424] p-8 sm:p-10 text-center shadow-xl">
+      <div class="w-14 h-14 rounded-full bg-[#111111] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mx-auto mb-5">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      </div>
+
+      <h3 class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] uppercase tracking-wide">
+        MEMBER STORIES COMING SOON
+      </h3>
+
+      <p class="font-['DM_Sans'] text-sm sm:text-base text-[#A7A29A] mt-3 leading-relaxed max-w-lg mx-auto">
+        We value honest feedback and genuine member experiences. Verified stories and community highlights from THE FIT MUSCLE GYM members will be featured here soon.
+      </p>
+
+      <div class="mt-8 pt-6 border-t border-[#222222] flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href={site.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#C9B27C] hover:text-[#D8C28E] transition-colors py-2 px-4 rounded-lg bg-[#111111] border border-[#2A2A2A] hover:border-[#C9B27C]/50"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>VIEW ON GOOGLE MAPS</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

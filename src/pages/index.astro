@@ -1,0 +1,68 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import MobileMenu from "../components/MobileMenu.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Team from "../components/Team.astro";
+import Transformations from "../components/Transformations.astro";
+import Machines from "../components/Machines.astro";
+import Plans from "../components/Plans.astro";
+import Reviews from "../components/Reviews.astro";
+import Gallery from "../components/Gallery.astro";
+import Location from "../components/Location.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Footer from "../components/Footer.astro";
+import PersistentQuickActions from "../components/PersistentQuickActions.astro";
+import EnquiryModal from "../components/EnquiryModal.astro";
+---
+
+<Layout>
+  <!-- 1. Navigation -->
+  <Header />
+
+  <!-- Responsive Mobile Menu Drawer -->
+  <MobileMenu />
+
+  <!-- Main Content Sequence (Exact Order) -->
+  <main id="main-content">
+    <!-- 2. Hero -->
+    <Hero />
+
+    <!-- 3. About / What We Offer -->
+    <About />
+
+    <!-- 4. Meet the Team -->
+    <Team />
+
+    <!-- 5. Transformations -->
+    <Transformations />
+
+    <!-- 6. Machines and Equipment -->
+    <Machines />
+
+    <!-- 7. Membership Plans -->
+    <Plans />
+
+    <!-- 8. Member Reviews -->
+    <Reviews />
+
+    <!-- 9. Gallery and Community -->
+    <Gallery />
+
+    <!-- 10. Location and Opening Hours -->
+    <Location />
+
+    <!-- 11. Contact / Final CTA -->
+    <FinalCTA />
+  </main>
+
+  <!-- 12. Footer -->
+  <Footer />
+
+  <!-- Five Persistent Quick Actions (Desktop Dock & Mobile Bottom Bar) -->
+  <PersistentQuickActions />
+
+  <!-- Interactive Enquiry Modal & Mobile Bottom Sheet -->
+  <EnquiryModal />
+</Layout>

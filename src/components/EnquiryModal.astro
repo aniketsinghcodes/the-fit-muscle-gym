@@ -1,0 +1,298 @@
+---
+import { plans } from "../data/site";
+---
+
+<div
+  id="enquiry-modal"
+  class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="enquiry-modal-title"
+>
+  <!-- Backdrop -->
+  <div
+    id="enquiry-backdrop"
+    class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+  ></div>
+
+  <!-- Modal / Bottom Sheet Card -->
+  <div
+    id="enquiry-card"
+    class="relative z-10 w-full sm:max-w-lg bg-[#141414] border border-[#2E2E2E] rounded-t-3xl sm:rounded-2xl shadow-2xl p-6 sm:p-8 transform transition-transform duration-300 max-h-[90vh] overflow-y-auto"
+  >
+    <!-- Close Button -->
+    <button
+      type="button"
+      id="close-enquiry-btn"
+      class="absolute top-5 right-5 p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9B27C] cursor-pointer"
+      aria-label="Close enquiry form"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header -->
+    <div class="mb-6">
+      <span class="text-xs uppercase font-['Oswald'] tracking-widest text-[#C9B27C] font-semibold">
+        MEMBERSHIP ENQUIRY
+      </span>
+      <h3 id="enquiry-modal-title" class="font-['Oswald'] text-2xl sm:text-3xl font-bold text-[#F5F2EA] uppercase mt-1">
+        START YOUR FITNESS JOURNEY
+      </h3>
+      <p class="font-['DM_Sans'] text-xs sm:text-sm text-[#A7A29A] mt-1.5">
+        Fill out this quick form to connect directly with trainer Krishna Gupta on WhatsApp.
+      </p>
+    </div>
+
+    <!-- Form -->
+    <form id="enquiry-form" class="space-y-4" novalidate>
+      <!-- 1. Full Name -->
+      <div>
+        <label for="enquiry-name" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1.5 font-semibold">
+          Full Name <span class="text-[#C9B27C]">*</span>
+        </label>
+        <input
+          type="text"
+          id="enquiry-name"
+          name="name"
+          required
+          placeholder="Enter your name"
+          class="w-full px-4 py-3 rounded-xl bg-[#080808] border border-[#2E2E2E] text-[#F5F2EA] placeholder-[#666666] text-sm focus:border-[#C9B27C] focus:outline-none focus:ring-1 focus:ring-[#C9B27C] transition-colors"
+        />
+        <p id="name-error" class="hidden text-xs text-[#E53E3E] mt-1 font-['DM_Sans']"></p>
+      </div>
+
+      <!-- 2. Phone Number -->
+      <div>
+        <label for="enquiry-phone" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1.5 font-semibold">
+          Phone Number <span class="text-[#C9B27C]">*</span>
+        </label>
+        <input
+          type="text"
+          id="enquiry-phone"
+          name="phone"
+          required
+          placeholder="10-digit mobile number"
+          class="w-full px-4 py-3 rounded-xl bg-[#080808] border border-[#2E2E2E] text-[#F5F2EA] placeholder-[#666666] text-sm focus:border-[#C9B27C] focus:outline-none focus:ring-1 focus:ring-[#C9B27C] transition-colors"
+        />
+        <p id="phone-error" class="hidden text-xs text-[#E53E3E] mt-1 font-['DM_Sans']"></p>
+      </div>
+
+      <!-- 3. Interested Plan -->
+      <div>
+        <label for="enquiry-plan" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1.5 font-semibold">
+          Interested Plan <span class="text-[#C9B27C]">*</span>
+        </label>
+        <select
+          id="enquiry-plan"
+          name="plan"
+          required
+          class="w-full px-4 py-3 rounded-xl bg-[#080808] border border-[#2E2E2E] text-[#F5F2EA] text-sm focus:border-[#C9B27C] focus:outline-none focus:ring-1 focus:ring-[#C9B27C] transition-colors cursor-pointer"
+        >
+          <option value="">Select a Membership Plan</option>
+          {plans.map((p) => (
+            <option value={p.name}>{p.name} — {p.priceFormatted} ({p.duration})</option>
+          ))}
+        </select>
+        <p id="plan-error" class="hidden text-xs text-[#E53E3E] mt-1 font-['DM_Sans']"></p>
+      </div>
+
+      <!-- 4. Fitness Goal -->
+      <div>
+        <label for="enquiry-goal" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1.5 font-semibold">
+          Fitness Goal
+        </label>
+        <select
+          id="enquiry-goal"
+          name="goal"
+          class="w-full px-4 py-3 rounded-xl bg-[#080808] border border-[#2E2E2E] text-[#F5F2EA] text-sm focus:border-[#C9B27C] focus:outline-none focus:ring-1 focus:ring-[#C9B27C] transition-colors cursor-pointer"
+        >
+          <option value="General Fitness">General Fitness</option>
+          <option value="Muscle Gain">Muscle Gain</option>
+          <option value="Fat Loss">Fat Loss</option>
+          <option value="Strength Training">Strength</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- 5. Message (Optional) -->
+      <div>
+        <label for="enquiry-message" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1.5 font-semibold">
+          Message (Optional)
+        </label>
+        <textarea
+          id="enquiry-message"
+          name="message"
+          rows="2"
+          placeholder="Any specific questions, batch preference, or health details..."
+          class="w-full px-4 py-2.5 rounded-xl bg-[#080808] border border-[#2E2E2E] text-[#F5F2EA] placeholder-[#666666] text-sm focus:border-[#C9B27C] focus:outline-none focus:ring-1 focus:ring-[#C9B27C] transition-colors resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="pt-2">
+        <button
+          type="submit"
+          class="w-full py-4 px-6 rounded-xl font-['Oswald'] text-base font-bold uppercase tracking-wider bg-[#C9B27C] text-[#080808] hover:bg-[#D8C28E] hover:shadow-[0_0_25px_rgba(201,178,124,0.3)] transition-all duration-300 cursor-pointer active:scale-95 flex items-center justify-center gap-2 shadow-lg"
+        >
+          <svg class="w-5 h-5 text-[#080808]" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"></path>
+          </svg>
+          <span>SEND VIA WHATSAPP</span>
+        </button>
+      </div>
+
+      <!-- Disclaimer (No fake server storage) -->
+      <p class="text-[11px] text-[#A7A29A] text-center font-['DM_Sans'] pt-2">
+        Submitting opens WhatsApp directly with your message to +91 91406 61828.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+  function setupEnquiryModal() {
+    const modal = document.getElementById("enquiry-modal");
+    const backdrop = document.getElementById("enquiry-backdrop");
+    const closeBtn = document.getElementById("close-enquiry-btn");
+    const form = document.getElementById("enquiry-form") as HTMLFormElement | null;
+    const planSelect = document.getElementById("enquiry-plan") as HTMLSelectElement | null;
+    const nameInput = document.getElementById("enquiry-name") as HTMLInputElement | null;
+    const phoneInput = document.getElementById("enquiry-phone") as HTMLInputElement | null;
+    const goalSelect = document.getElementById("enquiry-goal") as HTMLSelectElement | null;
+    const messageInput = document.getElementById("enquiry-message") as HTMLTextAreaElement | null;
+
+    const nameError = document.getElementById("name-error");
+    const phoneError = document.getElementById("phone-error");
+    const planError = document.getElementById("plan-error");
+
+    let lastActiveElement: HTMLElement | null = null;
+
+    function openModal(preselectedPlan?: string) {
+      lastActiveElement = document.activeElement as HTMLElement | null;
+      if (preselectedPlan && planSelect) {
+        planSelect.value = preselectedPlan;
+      }
+      modal?.classList.remove("hidden");
+      modal?.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => {
+        nameInput?.focus();
+      }, 50);
+    }
+
+    function closeModal() {
+      modal?.classList.add("hidden");
+      modal?.classList.remove("flex");
+      document.body.style.overflow = "";
+      if (lastActiveElement) {
+        lastActiveElement.focus();
+      }
+    }
+
+    // Attach to all elements with [data-open-enquiry]
+    document.querySelectorAll("[data-open-enquiry]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const plan = btn.getAttribute("data-plan");
+        openModal(plan || undefined);
+      });
+    });
+
+    closeBtn?.addEventListener("click", closeModal);
+    backdrop?.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal && !modal.classList.contains("hidden")) {
+        closeModal();
+      }
+    });
+
+    // Form Submission Handler
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let hasError = false;
+
+      // Validate Name
+      const name = nameInput?.value.trim() || "";
+      if (name.length < 2) {
+        if (nameError) {
+          nameError.textContent = "Please enter your full name.";
+          nameError.classList.remove("hidden");
+        }
+        nameInput?.classList.add("border-[#E53E3E]");
+        hasError = true;
+      } else {
+        nameError?.classList.add("hidden");
+        nameInput?.classList.remove("border-[#E53E3E]");
+      }
+
+      // Validate Phone
+      const phone = phoneInput?.value.trim() || "";
+      const phoneRegex = /^[6-9]\d{9}$/;
+      // Clean up common prefixes like +91 or spaces
+      const cleanPhone = phone.replace(/[\s\-\+]/g, "").slice(-10);
+      if (!phoneRegex.test(cleanPhone)) {
+        if (phoneError) {
+          phoneError.textContent = "Please enter a valid 10-digit mobile number.";
+          phoneError.classList.remove("hidden");
+        }
+        phoneInput?.classList.add("border-[#E53E3E]");
+        hasError = true;
+      } else {
+        phoneError?.classList.add("hidden");
+        phoneInput?.classList.remove("border-[#E53E3E]");
+      }
+
+      // Validate Plan
+      const selectedPlan = planSelect?.value || "";
+      if (!selectedPlan) {
+        if (planError) {
+          planError.textContent = "Please select an interested plan.";
+          planError.classList.remove("hidden");
+        }
+        planSelect?.classList.add("border-[#E53E3E]");
+        hasError = true;
+      } else {
+        planError?.classList.add("hidden");
+        planSelect?.classList.remove("border-[#E53E3E]");
+      }
+
+      if (hasError) return;
+
+      const goal = goalSelect?.value || "General Fitness";
+      const message = messageInput?.value.trim() || "";
+
+      // Generate formatted WhatsApp message
+      const textLines = [
+        `*THE FIT MUSCLE GYM — Membership Enquiry*`,
+        ``,
+        `*Name:* ${name}`,
+        `*Phone:* ${phone}`,
+        `*Interested Plan:* ${selectedPlan}`,
+        `*Fitness Goal:* ${goal}`,
+      ];
+
+      if (message) {
+        textLines.push(`*Message:* ${message}`);
+      }
+
+      textLines.push(``, `Looking forward to starting my training!`);
+
+      const whatsappText = textLines.join("\n");
+      const whatsappUrl = `https://wa.me/919140661828?text=${encodeURIComponent(whatsappText)}`;
+
+      // Open WhatsApp
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+      // Close modal
+      closeModal();
+      form.reset();
+    });
+  }
+
+  setupEnquiryModal();
+  document.addEventListener("astro:page-load", setupEnquiryModal);
+</script>

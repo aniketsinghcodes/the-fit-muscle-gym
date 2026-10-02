@@ -1,0 +1,145 @@
+---
+import { transformations } from "../data/site";
+---
+
+<section id="transformations" class="py-20 lg:py-28 bg-[#080808] border-b border-[#171717]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+        REAL PROGRESS
+      </span>
+      <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+        MEMBER TRANSFORMATIONS
+      </h2>
+      <div class="w-16 h-1 bg-[#C9B27C] mx-auto mt-4 rounded-full"></div>
+      <p class="font-['DM_Sans'] text-base sm:text-lg text-[#A7A29A] mt-5 leading-relaxed">
+        Real journey, real discipline, and real changes. Here is proof of what focused training and consistency can accomplish at THE FIT MUSCLE GYM.
+      </p>
+    </div>
+
+    <!-- Transformations Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {transformations.map((item, index) => (
+        <div class="group bg-[#111111] rounded-2xl border border-[#222222] overflow-hidden flex flex-col justify-between hover:border-[#C9B27C]/40 transition-all duration-300 shadow-xl">
+          <!-- Image Box with Lightbox Trigger -->
+          <div class="relative overflow-hidden bg-[#080808] aspect-[4/5] cursor-pointer transformation-trigger" data-img-src={item.image} data-img-title={item.title}>
+            <img
+              src={item.image}
+              alt={item.alt}
+              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent opacity-60"></div>
+            
+            <!-- Zoom Icon Overlay -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300">
+              <span class="p-3 rounded-full bg-[#171717]/90 text-[#C9B27C] border border-[#C9B27C]/40 shadow-lg">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                </svg>
+              </span>
+            </div>
+            
+            <div class="absolute top-4 left-4">
+              <span class="px-3 py-1 rounded-full bg-[#080808]/80 backdrop-blur-md text-[11px] font-['Oswald'] uppercase tracking-wider text-[#C9B27C] border border-[#C9B27C]/30">
+                TRANSFORMATION #{index + 1}
+              </span>
+            </div>
+          </div>
+
+          <!-- Caption & Content -->
+          <div class="p-6">
+            <h3 class="font-['Oswald'] text-xl font-bold text-[#F5F2EA] uppercase">
+              {item.title}
+            </h3>
+            <p class="font-['DM_Sans'] text-sm text-[#A7A29A] mt-2 leading-relaxed">
+              {item.caption}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Respectful Disclaimer Note -->
+    <div class="mt-12 p-4 rounded-xl bg-[#111111]/70 border border-[#1E1E1E] text-center max-w-2xl mx-auto">
+      <p class="text-xs text-[#A7A29A] font-['DM_Sans']">
+        <strong class="text-[#F5F2EA]">Please note:</strong> Every body is unique. Results depend on individual consistency, nutrition, effort, and starting point. THE FIT MUSCLE GYM provides the guidance, environment, and equipment to help you achieve your own best shape.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox Modal for Transformations -->
+<div
+  id="transformation-lightbox"
+  class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md items-center justify-center p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Enlarged transformation photo"
+>
+  <button
+    type="button"
+    id="close-lightbox"
+    class="absolute top-6 right-6 p-3 rounded-full bg-[#171717] text-[#F5F2EA] hover:text-[#C9B27C] border border-[#2E2E2E] focus:outline-none focus:ring-2 focus:ring-[#C9B27C] cursor-pointer"
+    aria-label="Close image viewer"
+  >
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  <div class="max-w-4xl max-h-[90vh] flex flex-col items-center">
+    <img
+      id="lightbox-img"
+      src=""
+      alt="Enlarged view"
+      class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-[#2E2E2E]"
+    />
+    <p id="lightbox-title" class="font-['Oswald'] text-lg text-[#C9B27C] uppercase tracking-wider mt-4 text-center"></p>
+  </div>
+</div>
+
+<script>
+  function setupLightbox() {
+    const triggers = document.querySelectorAll(".transformation-trigger");
+    const modal = document.getElementById("transformation-lightbox");
+    const img = document.getElementById("lightbox-img") as HTMLImageElement | null;
+    const title = document.getElementById("lightbox-title");
+    const closeBtn = document.getElementById("close-lightbox");
+
+    if (!modal || !img || !title || !closeBtn) return;
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const src = trigger.getAttribute("data-img-src") || "";
+        const t = trigger.getAttribute("data-img-title") || "";
+        img.src = src;
+        title.textContent = t;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    function closeModal() {
+      modal?.classList.add("hidden");
+      modal?.classList.remove("flex");
+      document.body.style.overflow = "";
+      if (img) img.src = "";
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        closeModal();
+      }
+    });
+  }
+
+  setupLightbox();
+  document.addEventListener("astro:page-load", setupLightbox);
+</script>

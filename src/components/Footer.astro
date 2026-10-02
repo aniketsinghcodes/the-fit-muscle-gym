@@ -1,0 +1,119 @@
+---
+import { site, navLinks } from "../data/site";
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-[#080808] border-t border-[#171717] pt-16 pb-24 lg:pb-12 text-[#A7A29A] font-['DM_Sans'] text-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-[#171717]">
+      <!-- Brand & Summary -->
+      <div class="lg:col-span-5 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-[#171717] border border-[#C9B27C]/40 flex items-center justify-center text-[#C9B27C] font-bold">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 1.43-1.43-1.43-1.43 1.43-1.43zM5.57 7L7 5.57l8.43 8.43-1.43 1.43L5.57 7z" />
+            </svg>
+          </div>
+          <span class="font-['Oswald'] text-2xl font-bold tracking-wider text-[#F5F2EA] uppercase">
+            THE FIT MUSCLE GYM
+          </span>
+        </div>
+        
+        <p class="text-xs sm:text-sm text-[#A7A29A] leading-relaxed max-w-sm">
+          A dedicated fitness community in Dabauli West, Kanpur. Focused on consistency, safe training, and real transformations.
+        </p>
+
+        <!-- Social Icons -->
+        <div class="flex items-center gap-3 pt-2">
+          <!-- WhatsApp -->
+          <a
+            href={site.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-9 h-9 rounded-lg bg-[#171717] border border-[#2A2A2A] text-[#A7A29A] hover:text-[#C9B27C] hover:border-[#C9B27C]/50 flex items-center justify-center transition-all"
+            aria-label="Connect on WhatsApp"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path>
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"></path>
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a
+            href={site.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-9 h-9 rounded-lg bg-[#171717] border border-[#2A2A2A] text-[#A7A29A] hover:text-[#C9B27C] hover:border-[#C9B27C]/50 flex items-center justify-center transition-all"
+            aria-label="Follow on Instagram"
+          >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+
+          <!-- Google Maps -->
+          <a
+            href={site.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-9 h-9 rounded-lg bg-[#171717] border border-[#2A2A2A] text-[#A7A29A] hover:text-[#C9B27C] hover:border-[#C9B27C]/50 flex items-center justify-center transition-all"
+            aria-label="View on Google Maps"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Nav Links -->
+      <div class="lg:col-span-3 space-y-3">
+        <h4 class="font-['Oswald'] text-sm uppercase tracking-wider text-[#F5F2EA] font-semibold">
+          NAVIGATION
+        </h4>
+        <ul class="space-y-2 text-xs sm:text-sm">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="hover:text-[#C9B27C] transition-colors">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Gym Info & Address -->
+      <div class="lg:col-span-4 space-y-3 text-xs sm:text-sm">
+        <h4 class="font-['Oswald'] text-sm uppercase tracking-wider text-[#F5F2EA] font-semibold">
+          GYM DETAILS
+        </h4>
+        <div class="space-y-2 text-[#A7A29A]">
+          <p>
+            <strong class="text-[#F5F2EA] block">Address:</strong>
+            {site.address.full}
+          </p>
+          <p>
+            <strong class="text-[#F5F2EA] block">Trainer:</strong>
+            {site.trainer.name} ({site.trainer.experience})
+          </p>
+          <p>
+            <strong class="text-[#F5F2EA] block">Hours:</strong>
+            {site.hours.days}: {site.hours.morning} & {site.hours.evening}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#7A756D] gap-4">
+      <p>
+        &copy; {currentYear} THE FIT MUSCLE GYM. All rights reserved.
+      </p>
+      <p>
+        Mishri Lal Chauraha, Dabauli West, Kanpur, Uttar Pradesh 208022
+      </p>
+    </div>
+  </div>
+</footer>

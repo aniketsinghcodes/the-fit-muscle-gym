@@ -1,0 +1,125 @@
+---
+import { machines } from "../data/site";
+---
+
+<section id="equipment" class="py-20 lg:py-28 bg-[#111111] border-b border-[#171717] overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading & Carousel Controls Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div class="max-w-2xl">
+        <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+          PREMIUM EQUIPMENT
+        </span>
+        <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+          TRAIN WITH THE BEST.
+        </h2>
+        <div class="w-16 h-1 bg-[#C9B27C] mt-4 rounded-full"></div>
+        <p class="font-['DM_Sans'] text-base sm:text-lg text-[#A7A29A] mt-5">
+          Explore the equipment available at our gym.
+        </p>
+      </div>
+
+      <!-- Navigation Arrows for Desktop -->
+      <div class="flex items-center gap-3 self-start md:self-end">
+        <button
+          type="button"
+          id="equipment-prev-btn"
+          class="p-3 rounded-full bg-[#171717] border border-[#2A2A2A] text-[#F5F2EA] hover:text-[#C9B27C] hover:border-[#C9B27C]/50 hover:bg-[#1E1E1E] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9B27C]"
+          aria-label="Scroll equipment left"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          id="equipment-next-btn"
+          class="p-3 rounded-full bg-[#171717] border border-[#2A2A2A] text-[#F5F2EA] hover:text-[#C9B27C] hover:border-[#C9B27C]/50 hover:bg-[#1E1E1E] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9B27C]"
+          aria-label="Scroll equipment right"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Compact Horizontal Scroll Strip -->
+    <div
+      id="equipment-scroll-container"
+      class="flex gap-5 overflow-x-auto pb-6 pt-2 scroll-smooth snap-x snap-mandatory no-scrollbar -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 cursor-grab active:cursor-grabbing"
+      tabindex="0"
+      aria-label="Gym Equipment Horizontal Carousel"
+    >
+      {machines.map((machine, index) => (
+        <div class="flex-none w-[270px] sm:w-[320px] md:w-[340px] snap-start bg-[#171717] rounded-2xl border border-[#262626] overflow-hidden hover:border-[#C9B27C]/50 transition-all duration-300 group shadow-lg flex flex-col justify-between">
+          <!-- Image Box -->
+          <div class="relative aspect-[4/3] bg-[#080808] overflow-hidden">
+            <img
+              src={machine.image}
+              alt={machine.alt}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#171717] via-transparent to-transparent opacity-50"></div>
+            <div class="absolute top-3 right-3">
+              <span class="px-2.5 py-1 rounded-md bg-[#080808]/80 backdrop-blur-md text-[10px] font-['Oswald'] tracking-wider text-[#A7A29A] uppercase border border-[#2E2E2E]">
+                0{index + 1}
+              </span>
+            </div>
+          </div>
+
+          <!-- Small Understated Labels -->
+          <div class="p-4 sm:p-5">
+            <span class="text-[11px] font-semibold uppercase tracking-wider text-[#C9B27C]">
+              {machine.category}
+            </span>
+            <h3 class="font-['Oswald'] text-lg sm:text-xl font-bold text-[#F5F2EA] uppercase mt-0.5 tracking-wide">
+              {machine.name}
+            </h3>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Mobile Scroll Hint -->
+    <div class="flex items-center justify-between mt-4 text-xs text-[#A7A29A] font-['DM_Sans'] sm:hidden">
+      <span>Swipe to explore 7 machines</span>
+      <div class="flex gap-1" id="carousel-dots">
+        {machines.map((_, i) => (
+          <span class={`w-1.5 h-1.5 rounded-full ${i === 0 ? 'bg-[#C9B27C]' : 'bg-[#2E2E2E]'}`}></span>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupEquipmentCarousel() {
+    const container = document.getElementById("equipment-scroll-container");
+    const prevBtn = document.getElementById("equipment-prev-btn");
+    const nextBtn = document.getElementById("equipment-next-btn");
+
+    if (!container) return;
+
+    prevBtn?.addEventListener("click", () => {
+      container.scrollBy({ left: -340, behavior: "smooth" });
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      container.scrollBy({ left: 340, behavior: "smooth" });
+    });
+
+    // Keyboard navigation within container
+    container.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        container.scrollBy({ left: -340, behavior: "smooth" });
+      } else if (e.key === "ArrowRight") {
+        container.scrollBy({ left: 340, behavior: "smooth" });
+      }
+    });
+  }
+
+  setupEquipmentCarousel();
+  document.addEventListener("astro:page-load", setupEquipmentCarousel);
+</script>

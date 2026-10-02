@@ -1,0 +1,82 @@
+---
+import { plans } from "../data/site";
+---
+
+<section id="plans" class="py-20 lg:py-28 bg-[#080808] border-b border-[#171717]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+        TRANSPARENT PRICING
+      </span>
+      <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+        MEMBERSHIP PLANS
+      </h2>
+      <div class="w-16 h-1 bg-[#C9B27C] mx-auto mt-4 rounded-full"></div>
+      <p class="font-['DM_Sans'] text-base sm:text-lg text-[#A7A29A] mt-5">
+        Choose a duration that fits your routine. All plans include full access to our gym floor, machines, and coaching support.
+      </p>
+    </div>
+
+    <!-- 4 Membership Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {plans.map((plan) => (
+        <div class="bg-[#111111] rounded-2xl border border-[#242424] p-6 sm:p-7 flex flex-col justify-between hover:border-[#C9B27C]/60 hover:shadow-[0_0_25px_rgba(201,178,124,0.12)] transition-all duration-300 relative group">
+          <!-- Duration Badge -->
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#171717] border border-[#2E2E2E] text-xs font-['Oswald'] uppercase tracking-wider text-[#C9B27C]">
+                {plan.duration}
+              </span>
+            </div>
+
+            <!-- Plan Name -->
+            <h3 class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] uppercase tracking-wide">
+              {plan.name}
+            </h3>
+
+            <!-- Price -->
+            <div class="mt-4 pb-6 border-b border-[#1E1E1E]">
+              <span class="font-['Oswald'] text-4xl sm:text-5xl font-bold text-[#F5F2EA] tracking-tight">
+                {plan.priceFormatted}
+              </span>
+              <span class="text-xs text-[#A7A29A] font-['DM_Sans'] block mt-1">
+                for {plan.duration}
+              </span>
+            </div>
+
+            <!-- Features Included (Equal for all plans) -->
+            <ul class="mt-6 space-y-3 font-['DM_Sans'] text-xs sm:text-sm text-[#A7A29A]" role="list">
+              {plan.features.map((feature) => (
+                <li class="flex items-start gap-2.5">
+                  <svg class="w-4 h-4 text-[#C9B27C] shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Join Now Button preselecting plan -->
+          <div class="mt-8 pt-4">
+            <button
+              type="button"
+              data-open-enquiry
+              data-plan={plan.name}
+              class="w-full py-3.5 px-4 rounded-xl font-['Oswald'] tracking-wider text-sm font-bold uppercase bg-[#171717] text-[#F5F2EA] border border-[#2E2E2E] group-hover:bg-[#C9B27C] group-hover:text-[#080808] group-hover:border-[#C9B27C] transition-all duration-300 text-center cursor-pointer active:scale-95 shadow-md"
+              aria-label={`Join now with ${plan.name} plan at ${plan.priceFormatted}`}
+            >
+              JOIN NOW
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Facility Inclusivity Note -->
+    <div class="mt-12 text-center text-xs text-[#A7A29A] font-['DM_Sans'] max-w-xl mx-auto">
+      Each membership provides identical access to all training equipment and gym amenities. Durations are flexible without long-term lock-in or hidden charges.
+    </div>
+  </div>
+</section>

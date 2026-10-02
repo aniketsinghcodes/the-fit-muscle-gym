@@ -1,0 +1,150 @@
+---
+import { galleryItems } from "../data/site";
+---
+
+<section id="gallery" class="py-20 lg:py-28 bg-[#080808] border-b border-[#171717]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+        COMMUNITY & ATMOSPHERE
+      </span>
+      <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+        GYM GALLERY
+      </h2>
+      <div class="w-16 h-1 bg-[#C9B27C] mx-auto mt-4 rounded-full"></div>
+      <p class="font-['DM_Sans'] text-base sm:text-lg text-[#A7A29A] mt-5">
+        A glimpse into daily training, community events, and the energy that defines THE FIT MUSCLE GYM.
+      </p>
+    </div>
+
+    <!-- Responsive Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {galleryItems.map((item) => (
+        <div
+          class="gallery-item-card group relative bg-[#111111] rounded-2xl border border-[#222222] overflow-hidden aspect-[4/3] cursor-pointer hover:border-[#C9B27C]/50 transition-all duration-300 shadow-lg"
+          data-src={item.image}
+          data-title={item.title}
+          data-category={item.category}
+          tabindex="0"
+          role="button"
+          aria-label={`View photo: ${item.title}`}
+        >
+          <img
+            src={item.image}
+            alt={item.alt}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#080808]/90 via-[#080808]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+          
+          <!-- Category Badge -->
+          <div class="absolute top-3 left-3">
+            <span class="px-2.5 py-1 rounded-md bg-[#080808]/80 backdrop-blur-md text-[10px] font-['Oswald'] tracking-wider text-[#C9B27C] uppercase border border-[#C9B27C]/30">
+              {item.category}
+            </span>
+          </div>
+
+          <!-- Bottom Title -->
+          <div class="absolute bottom-3 left-3 right-3 p-2">
+            <h3 class="font-['Oswald'] text-base sm:text-lg font-bold text-[#F5F2EA] uppercase tracking-wide">
+              {item.title}
+            </h3>
+          </div>
+
+          <!-- Hover Magnify Overlay -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 backdrop-blur-[1px] transition-opacity">
+            <div class="p-3 rounded-full bg-[#171717]/90 text-[#C9B27C] border border-[#C9B27C]/40">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Lightbox Modal -->
+<div
+  id="gallery-modal"
+  class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md items-center justify-center p-4 sm:p-6"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Enlarged gallery photo viewer"
+>
+  <button
+    type="button"
+    id="close-gallery-modal"
+    class="absolute top-6 right-6 p-3 rounded-full bg-[#171717] text-[#F5F2EA] hover:text-[#C9B27C] border border-[#2E2E2E] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C9B27C] cursor-pointer"
+    aria-label="Close image viewer"
+  >
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  <div class="max-w-4xl max-h-[90vh] flex flex-col items-center">
+    <img
+      id="gallery-modal-img"
+      src=""
+      alt="Enlarged gallery photo"
+      class="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl border border-[#2E2E2E]"
+    />
+    <p id="gallery-modal-title" class="font-['Oswald'] text-lg text-[#C9B27C] uppercase tracking-wider mt-4 text-center"></p>
+  </div>
+</div>
+
+<script>
+  function setupGalleryModal() {
+    const cards = document.querySelectorAll(".gallery-item-card");
+    const modal = document.getElementById("gallery-modal");
+    const modalImg = document.getElementById("gallery-modal-img") as HTMLImageElement | null;
+    const modalTitle = document.getElementById("gallery-modal-title");
+    const closeBtn = document.getElementById("close-gallery-modal");
+
+    if (!modal || !modalImg || !modalTitle || !closeBtn) return;
+
+    cards.forEach((card) => {
+      const open = () => {
+        const src = card.getAttribute("data-src") || "";
+        const title = card.getAttribute("data-title") || "";
+        modalImg.src = src;
+        modalTitle.textContent = title;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+      };
+
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (e: any) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
+    });
+
+    function close() {
+      modal?.classList.add("hidden");
+      modal?.classList.remove("flex");
+      document.body.style.overflow = "";
+      if (modalImg) modalImg.src = "";
+    }
+
+    closeBtn.addEventListener("click", close);
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) close();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        close();
+      }
+    });
+  }
+
+  setupGalleryModal();
+  document.addEventListener("astro:page-load", setupGalleryModal);
+</script>

@@ -1,0 +1,108 @@
+---
+import { site } from "../data/site";
+---
+
+<section id="about" class="py-20 lg:py-28 bg-[#080808] border-b border-[#171717]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Heading -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="inline-block text-xs uppercase font-semibold tracking-widest text-[#C9B27C] mb-3">
+        ABOUT OUR GYM
+      </span>
+      <h2 class="font-['Oswald'] text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F5F2EA] uppercase">
+        WELCOME TO THE FIT MUSCLE GYM
+      </h2>
+      <div class="w-16 h-1 bg-[#C9B27C] mx-auto mt-4 rounded-full"></div>
+      <p class="font-['DM_Sans'] text-base sm:text-lg text-[#A7A29A] mt-5 leading-relaxed">
+        Located at Mishri Lal Chauraha in Dabauli West, Kanpur, THE FIT MUSCLE GYM is a dedicated fitness community built on discipline, encouragement, and honest daily effort.
+      </p>
+    </div>
+
+    <!-- About Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <!-- Image / Community Spotlight -->
+      <div class="lg:col-span-6 relative">
+        <div class="relative rounded-2xl overflow-hidden border border-[#262626] bg-[#111111] shadow-2xl group">
+          <img
+            src="/images/gallery/community-celebration.png"
+            alt="The Fit Muscle Gym community celebrating together under Consistency wall"
+            class="w-full h-auto object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent opacity-80"></div>
+          <div class="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-[#171717]/90 backdrop-blur-md border border-[#2E2E2E]">
+            <p class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">
+              BUILT ON CONSISTENCY
+            </p>
+            <p class="font-['DM_Sans'] text-xs text-[#A7A29A] mt-1">
+              Every rep counts. Our members train together with shared energy, mutual respect, and focused guidance.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copy & What We Offer -->
+      <div class="lg:col-span-6 space-y-6">
+        <div class="space-y-4 text-[#A7A29A] font-['DM_Sans'] text-base leading-relaxed">
+          <p>
+            At <strong class="text-[#F5F2EA]">THE FIT MUSCLE GYM</strong>, we believe fitness is not a temporary trend—it is a sustainable lifestyle. Whether you are stepping into a gym for the very first time or striving to surpass your personal bests, our environment is designed to keep you focused and motivated.
+          </p>
+          <p>
+            Our facility provides a comprehensive selection of strength, functional, and isolation machines alongside free weights. With direct coaching from experienced trainer Krishna Gupta, you learn proper technique, stay accountable, and make genuine progress in a friendly, supportive environment.
+          </p>
+        </div>
+
+        <!-- 4 Core Pillars (No invented awards or fake counts) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+          <div class="p-5 rounded-xl bg-[#111111] border border-[#1E1E1E] hover:border-[#C9B27C]/40 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-[#171717] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mb-3">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">Consistent Training</h3>
+            <p class="text-xs text-[#A7A29A] mt-1 font-['DM_Sans']">
+              Structured workout routines and habit-building principles tailored to your everyday schedule.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-[#111111] border border-[#1E1E1E] hover:border-[#C9B27C]/40 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-[#171717] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mb-3">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">Form & Safety</h3>
+            <p class="text-xs text-[#A7A29A] mt-1 font-['DM_Sans']">
+              Focus on safe lifting mechanics, injury prevention, and continuous posture guidance on the floor.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-[#111111] border border-[#1E1E1E] hover:border-[#C9B27C]/40 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-[#171717] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mb-3">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">Supportive Community</h3>
+            <p class="text-xs text-[#A7A29A] mt-1 font-['DM_Sans']">
+              A motivating local atmosphere where every member is encouraged to push forward and grow.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-[#111111] border border-[#1E1E1E] hover:border-[#C9B27C]/40 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-[#171717] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mb-3">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">Dual Daily Shifts</h3>
+            <p class="text-xs text-[#A7A29A] mt-1 font-['DM_Sans']">
+              Convenient morning (5:30–10:00 AM) and evening (5:00–10:00 PM) hours to fit your daily routine.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
