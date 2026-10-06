@@ -1,0 +1,298 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import OfficialGymQRModal from "../../components/OfficialGymQRModal.astro";
+---
+
+<AdminLayout title="Overview | Admin Console" activeNav="overview">
+  <div class="space-y-8">
+    <!-- Header Banner -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#242424]">
+      <div>
+        <span class="text-xs uppercase font-['Oswald'] tracking-widest text-[#C9B27C] font-semibold">
+          THE FIT MUSCLE GYM
+        </span>
+        <h1 class="font-['Oswald'] text-3xl sm:text-4xl font-black text-[#F5F2EA] uppercase tracking-wide mt-1">
+          GYM OVERVIEW
+        </h1>
+        <p class="text-xs sm:text-sm text-[#A7A29A] mt-1">
+          Real-time member status, daily attendance, and offline payment ledger.
+        </p>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          data-open-admin-qr
+          class="px-4 py-2.5 rounded-xl bg-[#171717] hover:bg-[#222222] border border-[#C9B27C]/40 text-[#C9B27C] font-['Oswald'] text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 shadow"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+          </svg>
+          <span>Display Gym QR</span>
+        </button>
+
+        <a
+          href="/admin/payments"
+          class="px-4 py-2.5 rounded-xl bg-[#C9B27C] hover:bg-[#D8C28E] text-[#080808] font-['Oswald'] text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 shadow"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Record Payment</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 5 KPI Overview Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <!-- Total Members -->
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#242424]">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#A7A29A] block">
+          Total Members
+        </span>
+        <span id="kpi-total" class="font-['Oswald'] text-3xl font-black text-[#F5F2EA] mt-1 block">
+          ...
+        </span>
+        <span class="text-[10px] text-[#7A756D] mt-1 block">All registered accounts</span>
+      </div>
+
+      <!-- Active Members -->
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#38A169]/30 bg-gradient-to-br from-[#141414] to-[#38A169]/5">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#38A169] block">
+          Active Members
+        </span>
+        <span id="kpi-active" class="font-['Oswald'] text-3xl font-black text-[#38A169] mt-1 block">
+          ...
+        </span>
+        <span class="text-[10px] text-[#A7A29A] mt-1 block">Valid subscription</span>
+      </div>
+
+      <!-- Expiring Soon -->
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#D69E2E]/30 bg-gradient-to-br from-[#141414] to-[#D69E2E]/5">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#D69E2E] block">
+          Expiring Soon
+        </span>
+        <span id="kpi-expiring" class="font-['Oswald'] text-3xl font-black text-[#D69E2E] mt-1 block">
+          ...
+        </span>
+        <span class="text-[10px] text-[#A7A29A] mt-1 block">&le; 5 days remaining</span>
+      </div>
+
+      <!-- Expired -->
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#E53E3E]/30 bg-gradient-to-br from-[#141414] to-[#E53E3E]/5">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#E53E3E] block">
+          Expired
+        </span>
+        <span id="kpi-expired" class="font-['Oswald'] text-3xl font-black text-[#E53E3E] mt-1 block">
+          ...
+        </span>
+        <span class="text-[10px] text-[#A7A29A] mt-1 block">Pending renewal</span>
+      </div>
+
+      <!-- Today's Attendance -->
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#C9B27C]/30 bg-gradient-to-br from-[#141414] to-[#C9B27C]/5 col-span-2 md:col-span-1">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#C9B27C] block">
+          Today's Check-ins
+        </span>
+        <span id="kpi-today-att" class="font-['Oswald'] text-3xl font-black text-[#C9B27C] mt-1 block">
+          ...
+        </span>
+        <span class="text-[10px] text-[#A7A29A] mt-1 block">Verified today</span>
+      </div>
+    </div>
+
+    <!-- Revenue & Payments Quick Summary -->
+    <div class="bg-[#141414] rounded-3xl border border-[#242424] p-6 sm:p-7 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#222222] gap-2">
+        <div>
+          <span class="text-[10px] font-['Oswald'] uppercase tracking-widest text-[#C9B27C] font-semibold">
+            OFFLINE REVENUE
+          </span>
+          <h2 class="font-['Oswald'] text-xl font-bold text-[#F5F2EA] uppercase">
+            FEES & REVENUE SUMMARY
+          </h2>
+        </div>
+        <a href="/admin/payments" class="text-xs text-[#C9B27C] hover:underline font-semibold">
+          Open Full Payment Ledger &rarr;
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6">
+        <div class="p-4 rounded-2xl bg-[#0C0C0C] border border-[#1E1E1E]">
+          <span class="text-[11px] text-[#A7A29A] uppercase tracking-wider block font-['Oswald']">Total Collected Fees</span>
+          <span id="rev-total" class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] mt-1 block">₹0</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-[#0C0C0C] border border-[#1E1E1E]">
+          <span class="text-[11px] text-[#A7A29A] uppercase tracking-wider block font-['Oswald']">This Month's Collections</span>
+          <span id="rev-month" class="font-['Oswald'] text-2xl font-bold text-[#C9B27C] mt-1 block">₹0</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-[#0C0C0C] border border-[#1E1E1E]">
+          <span class="text-[11px] text-[#A7A29A] uppercase tracking-wider block font-['Oswald']">Payment Methods Breakdown</span>
+          <span id="rev-methods" class="text-xs text-[#A7A29A] mt-1.5 block">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Column Section: Today's Check-ins & Recent Payments -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Left: Today's Attendance Feed -->
+      <div class="lg:col-span-6 bg-[#141414] rounded-3xl border border-[#242424] p-6 sm:p-7 shadow-xl">
+        <div class="flex items-center justify-between pb-4 border-b border-[#222222]">
+          <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">
+            TODAY'S CHECK-IN FEED
+          </h3>
+          <a href="/admin/attendance" class="text-xs text-[#C9B27C] hover:underline font-semibold">
+            All Records &rarr;
+          </a>
+        </div>
+
+        <div id="today-att-feed" class="mt-4 space-y-2.5">
+          <p class="text-xs text-[#7A756D] italic py-4 text-center">Loading check-ins...</p>
+        </div>
+      </div>
+
+      <!-- Right: Recent Recorded Payments -->
+      <div class="lg:col-span-6 bg-[#141414] rounded-3xl border border-[#242424] p-6 sm:p-7 shadow-xl">
+        <div class="flex items-center justify-between pb-4 border-b border-[#222222]">
+          <h3 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">
+            RECENT PAYMENTS
+          </h3>
+          <a href="/admin/payments" class="text-xs text-[#C9B27C] hover:underline font-semibold">
+            View Ledger &rarr;
+          </a>
+        </div>
+
+        <div id="recent-payments-feed" class="mt-4 space-y-2.5">
+          <p class="text-xs text-[#7A756D] italic py-4 text-center">Loading payments...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Modal -->
+  <OfficialGymQRModal />
+</AdminLayout>
+
+<script>
+  import { getSupabase, formatCurrency, formatDate, formatTime, getDaysRemaining } from '../../lib/supabase';
+
+  async function loadAdminOverview() {
+    const sb = getSupabase();
+
+    // 1. Fetch Profiles
+    const { data: profiles } = await sb.from('profiles').select('*');
+    const members = (profiles || []).filter((p) => p.role === 'member');
+    const totalEl = document.getElementById('kpi-total');
+    if (totalEl) totalEl.textContent = String(members.length);
+
+    // 2. Fetch Memberships to compute Active / Expiring / Expired
+    const { data: memberships } = await sb
+      .from('memberships')
+      .select('*, profiles(*)');
+
+    const mList = memberships || [];
+    let activeCount = 0;
+    let expiringCount = 0;
+    let expiredCount = 0;
+
+    mList.forEach((m) => {
+      const days = getDaysRemaining(m.end_date);
+      if (days < 0 || m.status === 'expired') {
+        expiredCount++;
+      } else if (days <= 5) {
+        expiringCount++;
+      } else {
+        activeCount++;
+      }
+    });
+
+    const activeEl = document.getElementById('kpi-active');
+    const expiringEl = document.getElementById('kpi-expiring');
+    const expiredEl = document.getElementById('kpi-expired');
+
+    if (activeEl) activeEl.textContent = String(activeCount);
+    if (expiringEl) expiringEl.textContent = String(expiringCount);
+    if (expiredEl) expiredEl.textContent = String(expiredCount);
+
+    // 3. Fetch Today's Attendance
+    const todayStr = new Date().toISOString().substring(0, 10);
+    const { data: todayAtt } = await sb
+      .from('attendance')
+      .select('*, profiles(*)')
+      .eq('check_in_date', todayStr)
+      .order('check_in_time', { ascending: false });
+
+    const attList = todayAtt || [];
+    const todayAttEl = document.getElementById('kpi-today-att');
+    if (todayAttEl) todayAttEl.textContent = String(attList.length);
+
+    const attFeedEl = document.getElementById('today-att-feed');
+    if (attFeedEl) {
+      if (attList.length === 0) {
+        attFeedEl.innerHTML = `<p class="text-xs text-[#7A756D] italic py-4 text-center">No check-ins recorded yet today.</p>`;
+      } else {
+        attFeedEl.innerHTML = attList.slice(0, 6).map((a) => `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-[#0C0C0C] border border-[#1E1E1E] text-xs">
+            <div>
+              <span class="font-semibold text-[#F5F2EA] block">${a.profiles?.full_name || 'Member'}</span>
+              <span class="text-[10px] text-[#7A756D]">${a.profiles?.phone || ''}</span>
+            </div>
+            <span class="font-mono text-xs text-[#C9B27C] font-semibold">${formatTime(a.check_in_time)}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 4. Fetch Payments
+    const { data: payments } = await sb
+      .from('payments')
+      .select('*, profiles(*)')
+      .order('payment_date', { ascending: false });
+
+    const pList = payments || [];
+    let totalRevenue = 0;
+    let monthRevenue = 0;
+    let cashCount = 0;
+    let upiCount = 0;
+
+    const currentMonth = new Date().toISOString().substring(0, 7);
+
+    pList.forEach((p) => {
+      const amt = Number(p.amount) || 0;
+      totalRevenue += amt;
+      if (p.payment_date?.startsWith(currentMonth)) {
+        monthRevenue += amt;
+      }
+      if (p.payment_method === 'upi') upiCount++;
+      else cashCount++;
+    });
+
+    const revTotalEl = document.getElementById('rev-total');
+    const revMonthEl = document.getElementById('rev-month');
+    const revMethodsEl = document.getElementById('rev-methods');
+
+    if (revTotalEl) revTotalEl.textContent = formatCurrency(totalRevenue);
+    if (revMonthEl) revMonthEl.textContent = formatCurrency(monthRevenue);
+    if (revMethodsEl) revMethodsEl.textContent = `UPI: ${upiCount} payments &bull; Cash: ${cashCount} payments`;
+
+    const payFeedEl = document.getElementById('recent-payments-feed');
+    if (payFeedEl) {
+      if (pList.length === 0) {
+        payFeedEl.innerHTML = `<p class="text-xs text-[#7A756D] italic py-4 text-center">No payment records found yet.</p>`;
+      } else {
+        payFeedEl.innerHTML = pList.slice(0, 6).map((p) => `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-[#0C0C0C] border border-[#1E1E1E] text-xs">
+            <div>
+              <span class="font-semibold text-[#F5F2EA] block">${p.profiles?.full_name || 'Member'}</span>
+              <span class="text-[10px] text-[#7A756D]">${formatDate(p.payment_date)} &bull; ${(p.payment_method || 'cash').toUpperCase()}</span>
+            </div>
+            <span class="font-bold text-[#C9B27C] text-sm">${formatCurrency(p.amount)}</span>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  loadAdminOverview();
+</script>

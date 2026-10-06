@@ -1,0 +1,280 @@
+---
+// ============================================================
+// THE FIT MUSCLE GYM — Member QR Scanner Modal
+// Scans the gym's official QR code displayed at the counter
+// ============================================================
+---
+
+<div
+  id="qr-scanner-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="qr-modal-title"
+>
+  <div class="relative w-full max-w-md bg-[#141414] border border-[#2E2E2E] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+    <!-- Header -->
+    <div class="p-6 border-b border-[#222222] flex items-center justify-between">
+      <div>
+        <span class="text-[10px] font-['Oswald'] uppercase tracking-widest text-[#C9B27C] font-semibold">
+          THE FIT MUSCLE GYM
+        </span>
+        <h3 id="qr-modal-title" class="font-['Oswald'] text-xl font-bold text-[#F5F2EA] uppercase mt-0.5">
+          Scan Attendance QR
+        </h3>
+      </div>
+      <button
+        type="button"
+        id="close-qr-scanner-btn"
+        class="p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E] transition-colors cursor-pointer"
+        aria-label="Close QR scanner"
+      >
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body / Scanner Viewfinder -->
+    <div class="p-6 flex flex-col items-center">
+      <!-- Camera Viewport Box -->
+      <div class="relative w-full aspect-square max-w-[280px] rounded-2xl overflow-hidden bg-[#080808] border-2 border-[#C9B27C]/40 flex items-center justify-center shadow-inner">
+        <div id="qr-reader" class="w-full h-full"></div>
+
+        <!-- Scanning Reticle Overlay -->
+        <div id="scanner-reticle" class="absolute inset-4 pointer-events-none border-2 border-[#C9B27C]/60 rounded-xl flex items-center justify-center">
+          <div class="w-full h-0.5 bg-gradient-to-r from-transparent via-[#C9B27C] to-transparent animate-pulse"></div>
+        </div>
+
+        <!-- Camera Permission / Loading Placeholder -->
+        <div id="scanner-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center bg-[#0C0C0C]">
+          <div class="w-12 h-12 rounded-full bg-[#171717] border border-[#C9B27C]/30 flex items-center justify-center text-[#C9B27C] mb-3">
+            <svg class="w-6 h-6 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </div>
+          <p class="text-xs text-[#A7A29A]">Starting camera...</p>
+          <p class="text-[10px] text-[#7A756D] mt-1">Please allow camera permissions if prompted</p>
+        </div>
+      </div>
+
+      <!-- Feedback / Result Box -->
+      <div id="scanner-feedback" class="mt-4 w-full p-3.5 rounded-xl text-center text-xs hidden"></div>
+
+      <p class="text-xs text-[#A7A29A] text-center mt-4">
+        Point your camera at the official gym QR code displayed at the front counter.
+      </p>
+
+      <!-- Manual Code Entry Fallback -->
+      <div class="mt-4 pt-4 border-t border-[#222222] w-full">
+        <button
+          type="button"
+          id="toggle-manual-token-btn"
+          class="text-xs text-[#C9B27C] hover:underline w-full text-center"
+        >
+          Having camera issues? Enter token code manually
+        </button>
+
+        <form id="manual-token-form" class="mt-3 hidden space-y-2">
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="manual-token-input"
+              placeholder="e.g. TFM-TOKEN-..."
+              class="flex-1 px-3 py-2 rounded-xl bg-[#080808] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+            />
+            <button
+              type="submit"
+              class="px-4 py-2 rounded-xl bg-[#C9B27C] text-[#080808] font-['Oswald'] uppercase font-bold text-xs hover:bg-[#D8C28E] cursor-pointer"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { Html5Qrcode } from 'html5-qrcode';
+  import { getSupabase } from '../lib/supabase';
+
+  let html5QrCode: Html5Qrcode | null = null;
+  let isScanning = false;
+
+  const modal = document.getElementById('qr-scanner-modal');
+  const closeBtn = document.getElementById('close-qr-scanner-btn');
+  const placeholder = document.getElementById('scanner-placeholder');
+  const feedbackEl = document.getElementById('scanner-feedback');
+  const toggleManualBtn = document.getElementById('toggle-manual-token-btn');
+  const manualForm = document.getElementById('manual-token-form');
+  const manualInput = document.getElementById('manual-token-input') as HTMLInputElement | null;
+
+  async function startScanner() {
+    if (isScanning) return;
+    isScanning = true;
+    feedbackEl?.classList.add('hidden');
+
+    try {
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode('qr-reader');
+      }
+
+      placeholder?.classList.remove('hidden');
+
+      await html5QrCode.start(
+        { facingMode: 'environment' },
+        {
+          fps: 10,
+          qrbox: { width: 220, height: 220 },
+          aspectRatio: 1.0,
+        },
+        async (decodedText) => {
+          // Successfully scanned a QR code!
+          await handleScannedToken(decodedText);
+        },
+        () => {
+          // Frame parse error (ignore frames without QR)
+        }
+      );
+
+      placeholder?.classList.add('hidden');
+    } catch (err: any) {
+      console.warn('Camera start error:', err);
+      if (placeholder) {
+        placeholder.innerHTML = `
+          <div class="text-[#E53E3E] text-xs font-semibold">Camera Access Blocked</div>
+          <p class="text-[10px] text-[#A7A29A] mt-1">Please enable camera permission in your browser or enter the code below.</p>
+        `;
+        placeholder.classList.remove('hidden');
+      }
+    }
+  }
+
+  async function stopScanner() {
+    if (!isScanning) return;
+    isScanning = false;
+    try {
+      if (html5QrCode && html5QrCode.isScanning) {
+        await html5QrCode.stop();
+      }
+    } catch (e) {
+      console.warn('Camera stop error:', e);
+    }
+  }
+
+  function showFeedback(message: string, isSuccess: boolean) {
+    if (!feedbackEl) return;
+    feedbackEl.textContent = message;
+    feedbackEl.className = `mt-4 w-full p-3.5 rounded-xl text-center text-xs ${
+      isSuccess
+        ? 'bg-[#38A169]/15 border border-[#38A169]/40 text-[#38A169] font-semibold'
+        : 'bg-[#E53E3E]/15 border border-[#E53E3E]/40 text-[#E53E3E] font-semibold'
+    }`;
+    feedbackEl.classList.remove('hidden');
+  }
+
+  async function handleScannedToken(tokenText: string) {
+    // Stop scanning immediately to prevent duplicate burst reads
+    await stopScanner();
+    const token = tokenText.trim();
+    showFeedback('Verifying check-in with gym server...', true);
+
+    const sb = getSupabase();
+
+    // 1. First attempt to call the stored check_in_with_qr RPC function
+    try {
+      const { data, error } = await sb.rpc('check_in_with_qr', {
+        qr_token: token,
+      });
+
+      if (error) {
+        // Fallback: If parameter name differs in custom schema (e.g. p_token or token)
+        console.warn('RPC check_in_with_qr error:', error);
+        
+        // Let's test standard parameter name variants if parameter name mismatch
+        let fallbackHandled = false;
+        if (error.message?.includes('function') || error.message?.includes('parameter')) {
+          const try2 = await sb.rpc('check_in_with_qr', { token });
+          if (!try2.error) {
+            handleCheckinResponse(try2.data);
+            fallbackHandled = true;
+          }
+        }
+
+        if (!fallbackHandled) {
+          showFeedback(error.message || 'Check-in failed. Please verify with gym trainer.', false);
+          // Resume scanning after 3 seconds
+          setTimeout(startScanner, 3000);
+          return;
+        }
+      } else {
+        handleCheckinResponse(data);
+      }
+    } catch (e: any) {
+      showFeedback(e.message || 'Error executing check-in.', false);
+      setTimeout(startScanner, 3000);
+    }
+  }
+
+  function handleCheckinResponse(data: any) {
+    const isSuccess = data?.success !== false;
+    const msg = data?.message || 'Check-in recorded successfully! Welcome to THE FIT MUSCLE GYM.';
+
+    showFeedback(msg, isSuccess);
+
+    if (isSuccess) {
+      // Trigger dashboard reload after 2s
+      setTimeout(() => {
+        closeModal();
+        window.location.reload();
+      }, 2000);
+    } else {
+      setTimeout(startScanner, 3500);
+    }
+  }
+
+  function openModal() {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    startScanner();
+  }
+
+  function closeModal() {
+    stopScanner();
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  // Open triggers
+  document.querySelectorAll('[data-open-qr-scanner]').forEach((btn) => {
+    btn.addEventListener('click', openModal);
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  // Manual token toggle
+  toggleManualBtn?.addEventListener('click', () => {
+    manualForm?.classList.toggle('hidden');
+  });
+
+  manualForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = manualInput?.value.trim();
+    if (!token) return;
+    await handleScannedToken(token);
+  });
+</script>

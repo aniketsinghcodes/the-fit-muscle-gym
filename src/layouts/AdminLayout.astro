@@ -1,0 +1,200 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  activeNav?: 'overview' | 'members' | 'attendance' | 'payments';
+}
+
+const { title = "Admin Console | THE FIT MUSCLE GYM", activeNav = 'overview' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#080808" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body class="bg-[#080808] text-[#F5F2EA] min-h-screen flex flex-col font-['DM_Sans'] antialiased selection:bg-[#C9B27C]/30 selection:text-[#F5F2EA]">
+    <!-- Admin Header -->
+    <header class="sticky top-0 z-40 bg-[#0C0C0C]/95 backdrop-blur-md border-b border-[#242424]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <!-- Logo / Brand with Admin Badge -->
+        <a href="/admin" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-[#171717] border border-[#C9B27C]/50 flex items-center justify-center text-[#C9B27C] font-bold group-hover:border-[#C9B27C] transition-colors shadow-inner">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 1.43-1.43-1.43-1.43 1.43-1.43zM5.57 7L7 5.57l8.43 8.43-1.43 1.43L5.57 7z" />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-['Oswald'] text-lg sm:text-xl font-bold tracking-wider text-[#F5F2EA] leading-tight">
+              THE FIT MUSCLE GYM
+            </span>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="px-2 py-0.5 rounded bg-[#C9B27C] text-[#080808] font-['Oswald'] text-[10px] uppercase font-bold tracking-widest leading-none">
+                ADMIN CONSOLE
+              </span>
+              <span class="text-[10px] text-[#A7A29A]">Management</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Admin Navigation -->
+        <nav class="hidden lg:flex items-center gap-1 bg-[#141414] p-1.5 rounded-xl border border-[#242424]" aria-label="Admin Navigation">
+          <a
+            href="/admin"
+            class={`px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all ${
+              activeNav === 'overview'
+                ? 'bg-[#C9B27C] text-[#080808] shadow'
+                : 'text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]'
+            }`}
+          >
+            Overview
+          </a>
+          <a
+            href="/admin/members"
+            class={`px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all ${
+              activeNav === 'members'
+                ? 'bg-[#C9B27C] text-[#080808] shadow'
+                : 'text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]'
+            }`}
+          >
+            Members
+          </a>
+          <a
+            href="/admin/attendance"
+            class={`px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all ${
+              activeNav === 'attendance'
+                ? 'bg-[#C9B27C] text-[#080808] shadow'
+                : 'text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]'
+            }`}
+          >
+            Attendance & QR
+          </a>
+          <a
+            href="/admin/payments"
+            class={`px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all ${
+              activeNav === 'payments'
+                ? 'bg-[#C9B27C] text-[#080808] shadow'
+                : 'text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]'
+            }`}
+          >
+            Payments
+          </a>
+        </nav>
+
+        <!-- Right Side: Admin Profile & Actions -->
+        <div class="flex items-center gap-3">
+          <a
+            href="/"
+            class="hidden sm:inline-flex text-xs text-[#7A756D] hover:text-[#C9B27C] transition-colors py-1 px-2"
+            title="Open public website"
+          >
+            Public Site &rarr;
+          </a>
+
+          <div class="hidden sm:flex flex-col text-right">
+            <span id="admin-user-name" class="text-xs font-semibold text-[#F5F2EA] truncate max-w-[140px]">
+              Admin
+            </span>
+            <span class="text-[10px] text-[#C9B27C] font-semibold">
+              Authorized Staff
+            </span>
+          </div>
+
+          <button
+            type="button"
+            id="admin-signout-btn"
+            class="px-3.5 py-1.5 rounded-lg bg-[#171717] border border-[#2E2E2E] text-xs font-semibold text-[#A7A29A] hover:text-[#E53E3E] hover:border-[#E53E3E]/40 transition-all cursor-pointer"
+            title="Sign out of admin console"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Admin Sub-Nav Strip -->
+      <div class="lg:hidden border-t border-[#1E1E1E] px-3 py-2 flex items-center justify-between text-xs bg-[#111111] overflow-x-auto no-scrollbar gap-2">
+        <a
+          href="/admin"
+          class={`px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs ${
+            activeNav === 'overview' ? 'bg-[#C9B27C] text-[#080808] font-bold' : 'text-[#A7A29A]'
+          }`}
+        >
+          Overview
+        </a>
+        <a
+          href="/admin/members"
+          class={`px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs ${
+            activeNav === 'members' ? 'bg-[#C9B27C] text-[#080808] font-bold' : 'text-[#A7A29A]'
+          }`}
+        >
+          Members
+        </a>
+        <a
+          href="/admin/attendance"
+          class={`px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs ${
+            activeNav === 'attendance' ? 'bg-[#C9B27C] text-[#080808] font-bold' : 'text-[#A7A29A]'
+          }`}
+        >
+          Attendance
+        </a>
+        <a
+          href="/admin/payments"
+          class={`px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs ${
+            activeNav === 'payments' ? 'bg-[#C9B27C] text-[#080808] font-bold' : 'text-[#A7A29A]'
+          }`}
+        >
+          Payments
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Admin View -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
+
+    <!-- Admin Footer -->
+    <footer class="border-t border-[#171717] py-6 text-center text-xs text-[#7A756D]">
+      <p>THE FIT MUSCLE GYM Admin Console &bull; Confidential Internal System</p>
+    </footer>
+
+    <!-- Strict Admin Auth Guard -->
+    <script>
+      import { getCurrentSession, getCurrentProfile, signOut } from '../lib/supabase';
+
+      async function checkAdminAuth() {
+        const { session } = await getCurrentSession();
+        if (!session?.user) {
+          window.location.href = '/admin/login';
+          return;
+        }
+
+        const profile = await getCurrentProfile();
+        if (profile?.role !== 'admin') {
+          console.warn('Unauthorized access: profile role is not admin');
+          await signOut();
+          window.location.href = '/admin/login?error=unauthorized';
+          return;
+        }
+
+        const nameEl = document.getElementById('admin-user-name');
+        if (nameEl) {
+          nameEl.textContent = profile.full_name || profile.phone || 'Admin';
+        }
+      }
+
+      document.getElementById('admin-signout-btn')?.addEventListener('click', async () => {
+        await signOut();
+        window.location.href = '/admin/login';
+      });
+
+      checkAdminAuth();
+    </script>
+  </body>
+</html>

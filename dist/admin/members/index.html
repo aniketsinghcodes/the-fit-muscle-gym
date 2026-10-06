@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en" class="dark scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#080808"><title>Members Directory | Admin Console</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="stylesheet" href="/_astro/attendance.DQeJVchq.css"></head> <body class="bg-[#080808] text-[#F5F2EA] min-h-screen flex flex-col font-['DM_Sans'] antialiased selection:bg-[#C9B27C]/30 selection:text-[#F5F2EA]"> <!-- Admin Header --> <header class="sticky top-0 z-40 bg-[#0C0C0C]/95 backdrop-blur-md border-b border-[#242424]"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between"> <!-- Logo / Brand with Admin Badge --> <a href="/admin" class="flex items-center gap-3 group"> <div class="w-10 h-10 rounded-xl bg-[#171717] border border-[#C9B27C]/50 flex items-center justify-center text-[#C9B27C] font-bold group-hover:border-[#C9B27C] transition-colors shadow-inner"> <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"> <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 1.43-1.43-1.43-1.43 1.43-1.43zM5.57 7L7 5.57l8.43 8.43-1.43 1.43L5.57 7z"></path> </svg> </div> <div class="flex flex-col"> <span class="font-['Oswald'] text-lg sm:text-xl font-bold tracking-wider text-[#F5F2EA] leading-tight">
+THE FIT MUSCLE GYM
+</span> <div class="flex items-center gap-2 mt-0.5"> <span class="px-2 py-0.5 rounded bg-[#C9B27C] text-[#080808] font-['Oswald'] text-[10px] uppercase font-bold tracking-widest leading-none">
+ADMIN CONSOLE
+</span> <span class="text-[10px] text-[#A7A29A]">Management</span> </div> </div> </a> <!-- Desktop Admin Navigation --> <nav class="hidden lg:flex items-center gap-1 bg-[#141414] p-1.5 rounded-xl border border-[#242424]" aria-label="Admin Navigation"> <a href="/admin" class="px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]">
+Overview
+</a> <a href="/admin/members" class="px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all bg-[#C9B27C] text-[#080808] shadow">
+Members
+</a> <a href="/admin/attendance" class="px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]">
+Attendance & QR
+</a> <a href="/admin/payments" class="px-4 py-2 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold transition-all text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E]">
+Payments
+</a> </nav> <!-- Right Side: Admin Profile & Actions --> <div class="flex items-center gap-3"> <a href="/" class="hidden sm:inline-flex text-xs text-[#7A756D] hover:text-[#C9B27C] transition-colors py-1 px-2" title="Open public website">
+Public Site &rarr;
+</a> <div class="hidden sm:flex flex-col text-right"> <span id="admin-user-name" class="text-xs font-semibold text-[#F5F2EA] truncate max-w-[140px]">
+Admin
+</span> <span class="text-[10px] text-[#C9B27C] font-semibold">
+Authorized Staff
+</span> </div> <button type="button" id="admin-signout-btn" class="px-3.5 py-1.5 rounded-lg bg-[#171717] border border-[#2E2E2E] text-xs font-semibold text-[#A7A29A] hover:text-[#E53E3E] hover:border-[#E53E3E]/40 transition-all cursor-pointer" title="Sign out of admin console">
+Sign Out
+</button> </div> </div> <!-- Mobile Admin Sub-Nav Strip --> <div class="lg:hidden border-t border-[#1E1E1E] px-3 py-2 flex items-center justify-between text-xs bg-[#111111] overflow-x-auto no-scrollbar gap-2"> <a href="/admin" class="px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs text-[#A7A29A]">
+Overview
+</a> <a href="/admin/members" class="px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs bg-[#C9B27C] text-[#080808] font-bold">
+Members
+</a> <a href="/admin/attendance" class="px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs text-[#A7A29A]">
+Attendance
+</a> <a href="/admin/payments" class="px-3 py-1.5 rounded-lg whitespace-nowrap font-medium text-xs text-[#A7A29A]">
+Payments
+</a> </div> </header> <!-- Main Admin View --> <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">  <div class="space-y-6"> <!-- Header --> <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#242424]"> <div> <span class="text-xs uppercase font-['Oswald'] tracking-widest text-[#C9B27C] font-semibold">
+MEMBERSHIP MANAGEMENT
+</span> <h1 class="font-['Oswald'] text-3xl font-black text-[#F5F2EA] uppercase tracking-wide mt-1">
+MEMBER DIRECTORY
+</h1> <p class="text-xs sm:text-sm text-[#A7A29A] mt-1">
+Search, view subscriptions, assign plans, and renew memberships.
+</p> </div> <div class="flex items-center gap-3"> <span id="total-members-badge" class="px-3.5 py-1.5 rounded-xl bg-[#141414] border border-[#2E2E2E] text-xs font-mono text-[#C9B27C]">
+0 Members
+</span> </div> </div> <!-- Search & Filter Controls --> <div class="p-4 rounded-2xl bg-[#141414] border border-[#242424] flex flex-col md:flex-row items-center gap-4"> <div class="relative flex-1 w-full"> <input type="text" id="member-search-input" placeholder="Search by name, phone (+91...), or ID..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs sm:text-sm text-[#F5F2EA] placeholder-[#555555] focus:border-[#C9B27C] focus:outline-none"> <svg class="w-4 h-4 text-[#7A756D] absolute left-3.5 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path> </svg> </div> <!-- Filter Tabs --> <div class="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto no-scrollbar"> <button type="button" data-filter="all" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#C9B27C] text-[#080808]">
+All
+</button> <button type="button" data-filter="active" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]">
+Active
+</button> <button type="button" data-filter="expiring" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]">
+Expiring Soon
+</button> <button type="button" data-filter="expired" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]">
+Expired
+</button> </div> </div> <!-- Members Table --> <div class="bg-[#141414] rounded-3xl border border-[#242424] overflow-hidden shadow-xl"> <div class="overflow-x-auto"> <table class="w-full text-left text-xs sm:text-sm"> <thead> <tr class="text-[#7A756D] border-b border-[#242424] bg-[#111111] font-['Oswald'] uppercase tracking-wider text-xs"> <th class="py-3.5 px-4">Member Name</th> <th class="py-3.5 px-4">Phone</th> <th class="py-3.5 px-4">Current Plan</th> <th class="py-3.5 px-4">End Date</th> <th class="py-3.5 px-4">Status</th> <th class="py-3.5 px-4 text-right">Actions</th> </tr> </thead> <tbody id="members-table-tbody" class="divide-y divide-[#1C1C1C]"> <tr> <td colspan="6" class="py-12 text-center text-[#7A756D] italic">
+Loading members from database...
+</td> </tr> </tbody> </table> </div> </div> </div>  <div id="membership-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true"> <div class="w-full max-w-lg bg-[#141414] border border-[#2E2E2E] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"> <div class="flex items-center justify-between pb-4 border-b border-[#242424]"> <div> <span class="text-[10px] font-['Oswald'] uppercase tracking-widest text-[#C9B27C] font-semibold">
+MEMBERSHIP PLAN
+</span> <h3 class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] uppercase mt-0.5">
+Assign / Renew Plan
+</h3> </div> <button type="button" id="close-plan-modal-btn" class="p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA]">
+✕
+</button> </div> <form id="membership-form" class="space-y-4"> <input type="hidden" id="modal-member-user-id"> <div> <label class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#A7A29A] mb-1 font-semibold">
+Member
+</label> <input type="text" id="modal-member-name" disabled class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#242424] text-xs text-[#F5F2EA] opacity-80"> </div> <div> <label for="modal-plan-select" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+Select Plan
+</label> <select id="modal-plan-select" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"> <option value="">Choose Membership Plan</option> </select> </div> <div class="grid grid-cols-2 gap-4"> <div> <label for="modal-start-date" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+Membership Start Date
+</label> <input type="date" id="modal-start-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"> </div> <div> <label for="modal-end-date" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+Membership End Date
+</label> <input type="date" id="modal-end-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"> </div> </div> <p class="text-[11px] text-[#7A756D] leading-relaxed">
+Start date and payment date are independent. Setting dates activates the member's QR attendance scanner immediately.
+</p> <div class="pt-4 flex items-center justify-end gap-3"> <button type="button" id="cancel-plan-modal-btn" class="px-4 py-2.5 rounded-xl bg-[#1E1E1E] text-xs text-[#A7A29A] hover:text-[#F5F2EA]">
+Cancel
+</button> <button type="submit" id="save-plan-btn" class="px-6 py-2.5 rounded-xl bg-[#C9B27C] text-[#080808] font-['Oswald'] text-xs uppercase font-bold tracking-wider hover:bg-[#D8C28E] cursor-pointer">
+SAVE MEMBERSHIP
+</button> </div> </form> </div> </div>  <div id="edit-profile-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm" role="dialog" aria-modal="true"> <div class="w-full max-w-md bg-[#141414] border border-[#2E2E2E] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4"> <div class="flex items-center justify-between pb-3 border-b border-[#242424]"> <h3 class="font-['Oswald'] text-xl font-bold text-[#F5F2EA] uppercase">
+Edit Member Profile
+</h3> <button type="button" id="close-edit-modal-btn" class="p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA]">
+✕
+</button> </div> <form id="edit-profile-form" class="space-y-4"> <input type="hidden" id="edit-user-id"> <div> <label for="edit-full-name" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+Full Name
+</label> <input type="text" id="edit-full-name" required placeholder="Member's full name" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"> </div> <div> <label for="edit-phone" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+Phone Number
+</label> <input type="tel" id="edit-phone" required placeholder="+91..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"> </div> <div class="pt-3 flex items-center justify-end gap-3"> <button type="button" id="cancel-edit-btn" class="px-4 py-2 rounded-xl bg-[#1E1E1E] text-xs text-[#A7A29A]">
+Cancel
+</button> <button type="submit" class="px-6 py-2 rounded-xl bg-[#C9B27C] text-[#080808] font-['Oswald'] text-xs uppercase font-bold tracking-wider hover:bg-[#D8C28E]">
+Update Profile
+</button> </div> </form> </div> </div>  </main> <!-- Admin Footer --> <footer class="border-t border-[#171717] py-6 text-center text-xs text-[#7A756D]"> <p>THE FIT MUSCLE GYM Admin Console &bull; Confidential Internal System</p> </footer> <!-- Strict Admin Auth Guard --> <script type="module" src="/_astro/AdminLayout.astro_astro_type_script_index_0_lang.D51HucHq.js"></script> </body> </html> <script type="module" src="/_astro/members.astro_astro_type_script_index_0_lang.s-nD1Gcn.js"></script>

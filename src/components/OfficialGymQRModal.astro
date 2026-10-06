@@ -1,0 +1,211 @@
+---
+// ============================================================
+// THE FIT MUSCLE GYM — Admin Official Gym QR Code Modal
+// Generates and displays the official QR code for the front desk
+// ============================================================
+---
+
+<div
+  id="admin-qr-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="admin-qr-title"
+>
+  <div class="relative w-full max-w-lg bg-[#141414] border border-[#2E2E2E] rounded-3xl shadow-2xl overflow-hidden flex flex-col p-6 sm:p-8">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-[#222222]">
+      <div>
+        <span class="text-[10px] font-['Oswald'] uppercase tracking-widest text-[#C9B27C] font-semibold">
+          OFFICIAL GYM QR
+        </span>
+        <h3 id="admin-qr-title" class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] uppercase mt-0.5">
+          Counter Attendance QR
+        </h3>
+      </div>
+      <button
+        type="button"
+        id="close-admin-qr-btn"
+        class="p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA] hover:bg-[#1E1E1E] transition-colors cursor-pointer"
+        aria-label="Close QR Modal"
+      >
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Printable / Displayable Card -->
+    <div id="printable-qr-card" class="mt-6 p-6 rounded-2xl bg-white text-black flex flex-col items-center text-center shadow-xl">
+      <!-- Wordmark on poster -->
+      <div class="font-['Oswald'] text-2xl font-black uppercase tracking-wider text-black">
+        THE FIT MUSCLE GYM
+      </div>
+      <p class="font-['DM_Sans'] text-xs font-semibold text-gray-600 mt-0.5">
+        Mishri Lal Chauraha, Dabauli West, Kanpur
+      </p>
+
+      <!-- Rendered QR Canvas Container -->
+      <div class="my-5 p-3 rounded-xl bg-white border-4 border-black shadow-md flex items-center justify-center">
+        <canvas id="gym-qr-canvas" width="220" height="220"></canvas>
+      </div>
+
+      <div class="space-y-1">
+        <span class="inline-block px-3 py-1 rounded-full bg-black text-white font-['Oswald'] text-xs font-bold uppercase tracking-widest">
+          SCAN WITH FIT MUSCLE PORTAL
+        </span>
+        <p class="text-[11px] text-gray-700 font-medium pt-1">
+          Login at thefitmusclegym.com &rarr; My Account &rarr; Scan Attendance QR
+        </p>
+      </div>
+
+      <!-- Current Token Info -->
+      <div class="mt-4 pt-3 border-t border-gray-200 w-full flex items-center justify-between text-[10px] text-gray-500 font-mono">
+        <span>Token: <strong id="qr-token-label">Loading...</strong></span>
+        <span id="qr-status-badge" class="text-green-700 font-bold uppercase">Active</span>
+      </div>
+    </div>
+
+    <!-- Admin Controls -->
+    <div class="mt-6 pt-4 border-t border-[#222222] flex flex-col sm:flex-row items-center justify-between gap-3">
+      <button
+        type="button"
+        id="rotate-qr-token-btn"
+        class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#1E1E1E] hover:bg-[#2A2A2A] border border-[#333333] text-xs font-['Oswald'] uppercase font-bold tracking-wider text-[#C9B27C] transition-colors cursor-pointer flex items-center justify-center gap-2"
+        title="Generate a new active token and deactivate the previous one"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>Rotate / New Token</span>
+      </button>
+
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <button
+          type="button"
+          id="print-qr-btn"
+          class="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-[#C9B27C] hover:bg-[#D8C28E] text-[#080808] font-['Oswald'] uppercase font-bold text-xs tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          <span>Print Poster</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import QRCode from 'qrcode';
+  import { getSupabase } from '../lib/supabase';
+
+  const modal = document.getElementById('admin-qr-modal');
+  const closeBtn = document.getElementById('close-admin-qr-btn');
+  const canvas = document.getElementById('gym-qr-canvas') as HTMLCanvasElement | null;
+  const tokenLabel = document.getElementById('qr-token-label');
+  const rotateBtn = document.getElementById('rotate-qr-token-btn');
+  const printBtn = document.getElementById('print-qr-btn');
+
+  let currentToken = '';
+
+  async function loadActiveGymToken() {
+    const sb = getSupabase();
+    // Query existing active token
+    const { data, error } = await sb
+      .from('gym_checkin_tokens')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) {
+      // If no token exists yet, auto-create the initial official token
+      await createNewGymToken();
+    } else {
+      currentToken = data.token;
+      renderQRCode(currentToken);
+    }
+  }
+
+  async function createNewGymToken() {
+    const sb = getSupabase();
+    const newToken = `TFM-KANPUR-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+    // Deactivate old tokens
+    await sb
+      .from('gym_checkin_tokens')
+      .update({ is_active: false })
+      .eq('is_active', true);
+
+    // Insert new active token
+    const { data, error } = await sb
+      .from('gym_checkin_tokens')
+      .insert({
+        token: newToken,
+        is_active: true,
+      })
+      .select()
+      .single();
+
+    if (!error && data) {
+      currentToken = data.token;
+      renderQRCode(currentToken);
+    } else {
+      // Even if RLS insert fails, render temporary token
+      currentToken = newToken;
+      renderQRCode(currentToken);
+    }
+  }
+
+  function renderQRCode(tokenText: string) {
+    if (!canvas) return;
+    QRCode.toCanvas(canvas, tokenText, {
+      width: 220,
+      margin: 1,
+      color: {
+        dark: '#000000',
+        light: '#FFFFFF',
+      },
+    });
+
+    if (tokenLabel) {
+      tokenLabel.textContent = tokenText.length > 20 
+        ? `${tokenText.substring(0, 16)}...` 
+        : tokenText;
+    }
+  }
+
+  function openModal() {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    loadActiveGymToken();
+  }
+
+  function closeModal() {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-open-admin-qr]').forEach((btn) => {
+    btn.addEventListener('click', openModal);
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  rotateBtn?.addEventListener('click', async () => {
+    if (confirm('Generate a new official gym check-in QR code? The previous QR will be deactivated.')) {
+      await createNewGymToken();
+    }
+  });
+
+  printBtn?.addEventListener('click', () => {
+    window.print();
+  });
+</script>

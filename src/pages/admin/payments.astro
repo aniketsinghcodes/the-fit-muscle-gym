@@ -1,0 +1,724 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Offline Payment Ledger | Admin Console" activeNav="payments">
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#242424]">
+      <div>
+        <span class="text-xs uppercase font-['Oswald'] tracking-widest text-[#C9B27C] font-semibold">
+          OFFLINE FEE MANAGEMENT
+        </span>
+        <h1 class="font-['Oswald'] text-3xl font-black text-[#F5F2EA] uppercase tracking-wide mt-1">
+          PAYMENT LEDGER
+        </h1>
+        <p class="text-xs sm:text-sm text-[#A7A29A] mt-1">
+          Track and record offline membership fees (Cash, UPI, Other). No online payment gateway.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        id="open-record-payment-btn"
+        class="px-5 py-2.5 rounded-xl bg-[#C9B27C] hover:bg-[#D8C28E] text-[#080808] font-['Oswald'] text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 shadow"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Record Offline Payment</span>
+      </button>
+    </div>
+
+    <!-- Revenue & Collection KPI Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#242424]">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#A7A29A] block">
+          Total Collected
+        </span>
+        <span id="stat-total-rev" class="font-['Oswald'] text-2xl sm:text-3xl font-black text-[#F5F2EA] mt-1 block">
+          ₹0
+        </span>
+        <span class="text-[10px] text-[#7A756D] mt-1 block">Lifetime verified collections</span>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#C9B27C]/30 bg-gradient-to-br from-[#141414] to-[#C9B27C]/5">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#C9B27C] block">
+          This Month
+        </span>
+        <span id="stat-month-rev" class="font-['Oswald'] text-2xl sm:text-3xl font-black text-[#C9B27C] mt-1 block">
+          ₹0
+        </span>
+        <span class="text-[10px] text-[#A7A29A] mt-1 block">Current calendar month</span>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#242424]">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#38A169] block">
+          Cash vs UPI
+        </span>
+        <div class="flex items-center gap-3 mt-1.5 font-['Oswald'] text-lg font-bold">
+          <span class="text-[#38A169]" id="stat-cash-sum">₹0</span>
+          <span class="text-[#555555]">/</span>
+          <span class="text-[#63B3ED]" id="stat-upi-sum">₹0</span>
+        </div>
+        <span class="text-[10px] text-[#7A756D] block">Cash / UPI breakdown</span>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#141414] border border-[#242424]">
+        <span class="text-[11px] font-['Oswald'] uppercase tracking-wider text-[#A7A29A] block">
+          Total Transactions
+        </span>
+        <span id="stat-trans-count" class="font-['Oswald'] text-2xl sm:text-3xl font-black text-[#F5F2EA] mt-1 block">
+          0
+        </span>
+        <span class="text-[10px] text-[#7A756D] mt-1 block">Logged ledger receipts</span>
+      </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="p-4 rounded-2xl bg-[#141414] border border-[#242424] flex flex-col md:flex-row items-center gap-4">
+      <div class="relative flex-1 w-full">
+        <input
+          type="text"
+          id="payment-search-input"
+          placeholder="Search by member name, phone, or notes..."
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs sm:text-sm text-[#F5F2EA] placeholder-[#555555] focus:border-[#C9B27C] focus:outline-none"
+        />
+        <svg class="w-4 h-4 text-[#7A756D] absolute left-3.5 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- Method Filter -->
+      <div class="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto no-scrollbar">
+        <button
+          type="button"
+          data-method-filter="all"
+          class="method-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#C9B27C] text-[#080808]"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          data-method-filter="cash"
+          class="method-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]"
+        >
+          Cash
+        </button>
+        <button
+          type="button"
+          data-method-filter="upi"
+          class="method-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]"
+        >
+          UPI
+        </button>
+        <button
+          type="button"
+          data-method-filter="other"
+          class="method-btn px-3 py-1.5 rounded-lg text-xs font-['Oswald'] uppercase tracking-wider font-semibold bg-[#1C1C1C] text-[#A7A29A] hover:text-[#F5F2EA]"
+        >
+          Other
+        </button>
+      </div>
+    </div>
+
+    <!-- Payments Ledger Table -->
+    <div class="bg-[#141414] rounded-3xl border border-[#242424] overflow-hidden shadow-xl">
+      <div class="flex items-center justify-between p-5 border-b border-[#242424] bg-[#111111]">
+        <div class="flex items-center gap-3">
+          <h2 class="font-['Oswald'] text-lg font-bold text-[#F5F2EA] uppercase">
+            TRANSACTION HISTORY
+          </h2>
+          <span id="filtered-payments-count" class="px-2.5 py-0.5 rounded-full bg-[#1C1C1C] text-[11px] font-mono text-[#C9B27C]">
+            0 receipts
+          </span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead>
+            <tr class="text-[#7A756D] border-b border-[#242424] bg-[#0E0E0E] font-['Oswald'] uppercase tracking-wider text-xs">
+              <th class="py-3.5 px-4">Receipt Date</th>
+              <th class="py-3.5 px-4">Member</th>
+              <th class="py-3.5 px-4">Amount</th>
+              <th class="py-3.5 px-4">Method</th>
+              <th class="py-3.5 px-4">Status</th>
+              <th class="py-3.5 px-4">Notes / Ref</th>
+              <th class="py-3.5 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="payments-table-tbody" class="divide-y divide-[#1C1C1C]">
+            <tr>
+              <td colspan="7" class="py-12 text-center text-[#7A756D] italic">
+                Loading payment records from database...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORD PAYMENT MODAL -->
+  <div
+    id="payment-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="w-full max-w-lg bg-[#141414] border border-[#2E2E2E] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-[#242424]">
+        <div>
+          <span class="text-[10px] font-['Oswald'] uppercase tracking-widest text-[#C9B27C] font-semibold">
+            OFFLINE LEDGER
+          </span>
+          <h3 id="payment-modal-title" class="font-['Oswald'] text-2xl font-bold text-[#F5F2EA] uppercase mt-0.5">
+            Record Offline Payment
+          </h3>
+        </div>
+        <button type="button" id="close-payment-modal-btn" class="p-2 rounded-xl text-[#A7A29A] hover:text-[#F5F2EA]">
+          ✕
+        </button>
+      </div>
+
+      <form id="payment-form" class="space-y-4">
+        <input type="hidden" id="edit-payment-id" />
+
+        <!-- Member Selection -->
+        <div>
+          <label for="payment-member-select" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+            Member *
+          </label>
+          <select
+            id="payment-member-select"
+            required
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+          >
+            <option value="">Choose Member</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Payment Date (Independent from membership start_date) -->
+          <div>
+            <label for="payment-date-input" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+              Payment Date *
+            </label>
+            <input
+              type="date"
+              id="payment-date-input"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+            />
+            <span class="text-[10px] text-[#7A756D] mt-0.5 block">Actual date payment received</span>
+          </div>
+
+          <!-- Amount in INR -->
+          <div>
+            <label for="payment-amount-input" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+              Amount (₹) *
+            </label>
+            <input
+              type="number"
+              id="payment-amount-input"
+              min="0"
+              step="1"
+              required
+              placeholder="e.g. 1000"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none font-mono"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Payment Method -->
+          <div>
+            <label for="payment-method-select" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+              Payment Method *
+            </label>
+            <select
+              id="payment-method-select"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+            >
+              <option value="cash">Cash (Front Desk)</option>
+              <option value="upi">UPI (GPay / PhonePe / Paytm)</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div>
+            <label for="payment-status-select" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+              Payment Status *
+            </label>
+            <select
+              id="payment-status-select"
+              required
+              class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+            >
+              <option value="paid">Paid (Verified)</option>
+              <option value="pending">Pending</option>
+              <option value="refunded">Refunded</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Notes / Transaction Ref -->
+        <div>
+          <label for="payment-notes-input" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-1 font-semibold">
+            Notes / Reference
+          </label>
+          <input
+            type="text"
+            id="payment-notes-input"
+            placeholder="e.g. UPI Ref #40291928, Front desk receipt"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0A0A0A] border border-[#2E2E2E] text-xs text-[#F5F2EA] focus:border-[#C9B27C] focus:outline-none"
+          />
+        </div>
+
+        <div class="pt-3 flex items-center justify-end gap-3">
+          <button
+            type="button"
+            id="cancel-payment-modal-btn"
+            class="px-4 py-2.5 rounded-xl bg-[#1E1E1E] text-xs text-[#A7A29A] hover:text-[#F5F2EA]"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="save-payment-btn"
+            class="px-6 py-2.5 rounded-xl bg-[#C9B27C] text-[#080808] font-['Oswald'] text-xs uppercase font-bold tracking-wider hover:bg-[#D8C28E] cursor-pointer"
+          >
+            SAVE PAYMENT
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { getSupabase, formatCurrency, formatDate } from '../../lib/supabase';
+  import type { Payment, Profile } from '../../types/database';
+
+  let allPayments: (Payment & { profiles?: Profile })[] = [];
+  let membersList: Profile[] = [];
+  let activeMethodFilter: string = 'all';
+
+  const tbody = document.getElementById('payments-table-tbody');
+  const countBadge = document.getElementById('filtered-payments-count');
+  const searchInput = document.getElementById('payment-search-input') as HTMLInputElement | null;
+  const methodFilterBtns = document.querySelectorAll('.method-btn');
+
+  // Modal elements
+  const modal = document.getElementById('payment-modal');
+  const modalTitle = document.getElementById('payment-modal-title');
+  const openModalBtn = document.getElementById('open-record-payment-btn');
+  const closeModalBtn = document.getElementById('close-payment-modal-btn');
+  const cancelModalBtn = document.getElementById('cancel-payment-modal-btn');
+  const paymentForm = document.getElementById('payment-form') as HTMLFormElement | null;
+  const editIdInput = document.getElementById('edit-payment-id') as HTMLInputElement | null;
+  const memberSelect = document.getElementById('payment-member-select') as HTMLSelectElement | null;
+  const dateInput = document.getElementById('payment-date-input') as HTMLInputElement | null;
+  const amountInput = document.getElementById('payment-amount-input') as HTMLInputElement | null;
+  const methodSelect = document.getElementById('payment-method-select') as HTMLSelectElement | null;
+  const statusSelect = document.getElementById('payment-status-select') as HTMLSelectElement | null;
+  const notesInput = document.getElementById('payment-notes-input') as HTMLInputElement | null;
+
+  async function loadData() {
+    const sb = getSupabase();
+
+    // 1. Fetch payments with profiles joined
+    const { data: payments, error } = await sb
+      .from('payments')
+      .select('*, profiles(*)')
+      .order('payment_date', { ascending: false })
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching payments:', error);
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-12 text-center text-[#E53E3E]">
+              Failed to load payments. ${error.message}
+            </td>
+          </tr>
+        `;
+      }
+      return;
+    }
+
+    allPayments = (payments || []) as (Payment & { profiles?: Profile })[];
+
+    // 2. Fetch profiles for dropdown
+    const { data: profs } = await sb
+      .from('profiles')
+      .select('*')
+      .order('full_name', { ascending: true });
+
+    membersList = (profs || []).filter((p) => p.role === 'member') as Profile[];
+    populateMemberSelect();
+
+    // 3. Update summary metrics
+    updateKPICounters();
+
+    // 4. Render Table
+    renderTable();
+  }
+
+  function updateKPICounters() {
+    let totalRev = 0;
+    let monthRev = 0;
+    let cashSum = 0;
+    let upiSum = 0;
+
+    const currentMonthStr = new Date().toISOString().substring(0, 7);
+
+    allPayments.forEach((p) => {
+      if (p.payment_status === 'paid') {
+        const amt = Number(p.amount) || 0;
+        totalRev += amt;
+        if (p.payment_date && p.payment_date.startsWith(currentMonthStr)) {
+          monthRev += amt;
+        }
+        if (p.payment_method === 'cash') cashSum += amt;
+        if (p.payment_method === 'upi') upiSum += amt;
+      }
+    });
+
+    const statTotalEl = document.getElementById('stat-total-rev');
+    const statMonthEl = document.getElementById('stat-month-rev');
+    const statCashEl = document.getElementById('stat-cash-sum');
+    const statUpiEl = document.getElementById('stat-upi-sum');
+    const statTransEl = document.getElementById('stat-trans-count');
+
+    if (statTotalEl) statTotalEl.textContent = formatCurrency(totalRev);
+    if (statMonthEl) statMonthEl.textContent = formatCurrency(monthRev);
+    if (statCashEl) statCashEl.textContent = formatCurrency(cashSum);
+    if (statUpiEl) statUpiEl.textContent = formatCurrency(upiSum);
+    if (statTransEl) statTransEl.textContent = String(allPayments.length);
+  }
+
+  function populateMemberSelect() {
+    if (!memberSelect) return;
+    if (membersList.length === 0) {
+      memberSelect.innerHTML = `<option value="">No members registered yet</option>`;
+      return;
+    }
+
+    memberSelect.innerHTML = `
+      <option value="">Choose Member</option>
+      ${membersList
+        .map(
+          (m) => `
+        <option value="${m.id}">${m.full_name || 'Member'} (${m.phone || 'No phone'})</option>
+      `
+        )
+        .join('')}
+    `;
+  }
+
+  function renderTable() {
+    if (!tbody) return;
+
+    const searchTerm = (searchInput?.value || '').trim().toLowerCase();
+
+    const filtered = allPayments.filter((p) => {
+      // Method filter
+      if (activeMethodFilter !== 'all' && p.payment_method !== activeMethodFilter) {
+        return false;
+      }
+
+      // Search filter
+      if (searchTerm) {
+        const name = (p.profiles?.full_name || '').toLowerCase();
+        const phone = (p.profiles?.phone || '').toLowerCase();
+        const notes = (p.notes || '').toLowerCase();
+        if (!name.includes(searchTerm) && !phone.includes(searchTerm) && !notes.includes(searchTerm)) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    if (countBadge) {
+      countBadge.textContent = `${filtered.length} receipts`;
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="py-12 text-center text-[#7A756D]">
+            No payment receipts found matching criteria.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered
+      .map((p) => {
+        const name = p.profiles?.full_name || 'Member';
+        const phone = p.profiles?.phone || '—';
+        const formattedDate = formatDate(p.payment_date);
+        const formattedAmt = formatCurrency(p.amount);
+        const method = (p.payment_method || 'other').toUpperCase();
+        const status = p.payment_status || 'paid';
+        const notes = p.notes || '—';
+
+        const statusClasses =
+          status === 'paid'
+            ? 'bg-[#38A169]/15 text-[#38A169] border-[#38A169]/30'
+            : status === 'pending'
+            ? 'bg-[#D69E2E]/15 text-[#D69E2E] border-[#D69E2E]/30'
+            : 'bg-[#E53E3E]/15 text-[#E53E3E] border-[#E53E3E]/30';
+
+        const methodBadgeClasses =
+          p.payment_method === 'cash'
+            ? 'bg-[#2E382E] text-[#86EFAC]'
+            : p.payment_method === 'upi'
+            ? 'bg-[#1E293B] text-[#93C5FD]'
+            : 'bg-[#2D2D2D] text-[#D1D5DB]';
+
+        return `
+          <tr class="hover:bg-[#1A1A1A] transition-colors" data-id="${p.id}">
+            <td class="py-3.5 px-4 text-[#C9B27C] font-semibold">${formattedDate}</td>
+            <td class="py-3.5 px-4">
+              <span class="font-semibold text-[#F5F2EA] block">${name}</span>
+              <span class="text-[10px] text-[#7A756D] font-mono">${phone}</span>
+            </td>
+            <td class="py-3.5 px-4 font-mono font-bold text-[#F5F2EA] text-sm">${formattedAmt}</td>
+            <td class="py-3.5 px-4">
+              <span class="inline-block px-2.5 py-1 rounded-md text-[10px] font-mono font-bold uppercase tracking-wider ${methodBadgeClasses}">
+                ${method}
+              </span>
+            </td>
+            <td class="py-3.5 px-4">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border ${statusClasses}">
+                ${status}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 text-[#A7A29A] text-xs max-w-[200px] truncate" title="${notes}">
+              ${notes}
+            </td>
+            <td class="py-3.5 px-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  data-edit-id="${p.id}"
+                  class="px-2.5 py-1 rounded-lg bg-[#1E1E1E] hover:bg-[#2A2A2A] text-[#C9B27C] text-xs font-['Oswald'] uppercase font-semibold transition-colors cursor-pointer"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  data-delete-id="${p.id}"
+                  data-delete-amt="${formattedAmt}"
+                  data-delete-name="${name}"
+                  class="px-2.5 py-1 rounded-lg bg-[#241515] hover:bg-[#3D1E1E] text-[#E53E3E] text-xs font-['Oswald'] uppercase font-semibold transition-colors cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    // Attach row button listeners
+    tbody.querySelectorAll('[data-edit-id]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-edit-id');
+        const payment = allPayments.find((p) => p.id === id);
+        if (payment) openEditModal(payment);
+      });
+    });
+
+    tbody.querySelectorAll('[data-delete-id]').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const id = target.getAttribute('data-delete-id');
+        const amt = target.getAttribute('data-delete-amt');
+        const name = target.getAttribute('data-delete-name');
+        if (!id) return;
+
+        if (confirm(`Delete payment of ${amt} for ${name}?`)) {
+          const sb = getSupabase();
+          const { error } = await sb.from('payments').delete().eq('id', id);
+          if (error) {
+            alert(`Failed to delete payment: ${error.message}`);
+          } else {
+            allPayments = allPayments.filter((p) => p.id !== id);
+            updateKPICounters();
+            renderTable();
+          }
+        }
+      });
+    });
+  }
+
+  // Method Filter Listeners
+  methodFilterBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      const target = e.currentTarget as HTMLElement;
+      const method = target.getAttribute('data-method-filter') || 'all';
+      activeMethodFilter = method;
+
+      methodFilterBtns.forEach((b) => {
+        b.classList.remove('bg-[#C9B27C]', 'text-[#080808]');
+        b.classList.add('bg-[#1C1C1C]', 'text-[#A7A29A]');
+      });
+      target.classList.remove('bg-[#1C1C1C]', 'text-[#A7A29A]');
+      target.classList.add('bg-[#C9B27C]', 'text-[#080808]');
+
+      renderTable();
+    });
+  });
+
+  searchInput?.addEventListener('input', renderTable);
+
+  // Modal Handlers
+  function openCreateModal() {
+    if (modalTitle) modalTitle.textContent = 'Record Offline Payment';
+    if (editIdInput) editIdInput.value = '';
+    if (paymentForm) paymentForm.reset();
+    if (memberSelect) memberSelect.disabled = false;
+
+    // Set today as default payment date
+    if (dateInput) {
+      dateInput.value = new Date().toISOString().substring(0, 10);
+    }
+    if (statusSelect) statusSelect.value = 'paid';
+    if (methodSelect) methodSelect.value = 'cash';
+
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openEditModal(p: Payment & { profiles?: Profile }) {
+    if (modalTitle) modalTitle.textContent = 'Edit Payment Record';
+    if (editIdInput) editIdInput.value = p.id;
+    if (memberSelect) {
+      memberSelect.value = p.member_id;
+      memberSelect.disabled = true; // don't change owner
+    }
+    if (dateInput) dateInput.value = p.payment_date;
+    if (amountInput) amountInput.value = String(p.amount);
+    if (methodSelect) methodSelect.value = p.payment_method;
+    if (statusSelect) statusSelect.value = p.payment_status;
+    if (notesInput) notesInput.value = p.notes || '';
+
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal?.classList.add('hidden');
+    modal?.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  openModalBtn?.addEventListener('click', openCreateModal);
+  closeModalBtn?.addEventListener('click', closeModal);
+  cancelModalBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  paymentForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const editId = editIdInput?.value;
+    const userId = memberSelect?.value;
+    const paymentDate = dateInput?.value;
+    const amount = Number(amountInput?.value);
+    const method = methodSelect?.value;
+    const status = statusSelect?.value;
+    const notes = notesInput?.value?.trim() || null;
+
+    if (!userId || !paymentDate || isNaN(amount) || !method || !status) {
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    const sb = getSupabase();
+
+    if (editId) {
+      // Update existing record
+      const { data, error } = await sb
+        .from('payments')
+        .update({
+          payment_date: paymentDate,
+          amount: amount,
+          payment_method: method,
+          payment_status: status,
+          notes: notes,
+        })
+        .eq('id', editId)
+        .select('*, profiles(*)')
+        .single();
+
+      if (error) {
+        alert(`Failed to update payment: ${error.message}`);
+        return;
+      }
+
+      if (data) {
+        const idx = allPayments.findIndex((p) => p.id === editId);
+        if (idx !== -1) {
+          allPayments[idx] = data as any;
+        }
+        updateKPICounters();
+        closeModal();
+        renderTable();
+        alert('Payment record updated successfully.');
+      }
+    } else {
+      // Create new offline payment record
+      // Query if user has an active membership to link membership_id (optional)
+      const { data: memberSub } = await sb
+        .from('memberships')
+        .select('id')
+        .eq('member_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const { data, error } = await sb
+        .from('payments')
+        .insert({
+          member_id: userId,
+          membership_id: memberSub?.id || null,
+          payment_date: paymentDate,
+          amount: amount,
+          payment_method: method,
+          payment_status: status,
+          notes: notes,
+        })
+        .select('*, profiles(*)')
+        .single();
+
+      if (error) {
+        alert(`Failed to record payment: ${error.message}`);
+        return;
+      }
+
+      if (data) {
+        allPayments.unshift(data as any);
+        updateKPICounters();
+        closeModal();
+        renderTable();
+        alert('Offline payment recorded successfully.');
+      }
+    }
+  });
+
+  // Initial fetch
+  loadData();
+</script>

@@ -1,0 +1,302 @@
+---
+import "../../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#080808" />
+    <title>Admin Login | THE FIT MUSCLE GYM</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body class="bg-[#080808] text-[#F5F2EA] min-h-screen flex flex-col justify-between font-['DM_Sans'] antialiased selection:bg-[#C9B27C]/30 selection:text-[#F5F2EA]">
+    <!-- Top Bar -->
+    <header class="p-4 sm:p-6 flex items-center justify-between max-w-5xl mx-auto w-full">
+      <a href="/" class="flex items-center gap-2 text-xs uppercase tracking-widest text-[#A7A29A] hover:text-[#C9B27C] transition-colors">
+        &larr; Back to Public Website
+      </a>
+      <a href="/login" class="text-xs text-[#A7A29A] hover:text-[#F5F2EA]">
+        Member Login &rarr;
+      </a>
+    </header>
+
+    <!-- Main Auth Card Container -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6">
+      <div class="w-full max-w-md bg-[#111111] border border-[#2A2A2A] rounded-3xl p-7 sm:p-9 shadow-2xl relative overflow-hidden">
+        <!-- Top Crimson & Gold Indicator -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C9B27C] via-[#E53E3E] to-[#C9B27C]"></div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div class="w-12 h-12 rounded-2xl bg-[#1A1A1A] border border-[#C9B27C]/50 flex items-center justify-center text-[#C9B27C] mx-auto mb-4 shadow-inner">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <span class="px-2.5 py-0.5 rounded bg-[#C9B27C] text-[#080808] font-['Oswald'] text-[10px] uppercase font-bold tracking-widest inline-block mb-2">
+            STAFF & TRAINER ACCESS
+          </span>
+          <h1 class="font-['Oswald'] text-3xl font-black text-[#F5F2EA] uppercase">
+            ADMIN CONSOLE
+          </h1>
+          <p class="text-xs text-[#A7A29A] mt-2">
+            Authorized access only for Krishna Gupta and gym management.
+          </p>
+        </div>
+
+        <!-- Alert / Feedback Box -->
+        <div id="admin-alert" class="hidden mb-6 p-3.5 rounded-xl text-xs font-medium text-center"></div>
+
+        <!-- STEP 1: Admin Phone Form -->
+        <form id="admin-phone-form" class="space-y-4">
+          <div>
+            <label for="admin-phone-input" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] mb-2 font-semibold">
+              Admin Mobile Number
+            </label>
+            <div class="relative flex rounded-xl border border-[#2E2E2E] bg-[#0A0A0A] overflow-hidden focus-within:border-[#C9B27C] transition-colors">
+              <span class="inline-flex items-center px-4 bg-[#171717] text-xs font-semibold text-[#C9B27C] border-r border-[#262626]">
+                +91
+              </span>
+              <input
+                type="tel"
+                id="admin-phone-input"
+                name="phone"
+                maxlength="10"
+                required
+                placeholder="10-digit registered number"
+                class="w-full px-4 py-3 bg-transparent text-[#F5F2EA] placeholder-[#555555] text-sm focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            id="admin-send-otp-btn"
+            class="w-full py-3.5 px-6 rounded-xl font-['Oswald'] text-sm uppercase font-bold tracking-wider bg-[#C9B27C] text-[#080808] hover:bg-[#D8C28E] transition-all cursor-pointer shadow-lg active:scale-95 flex items-center justify-center gap-2 mt-4"
+          >
+            <span>REQUEST ADMIN OTP</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </form>
+
+        <!-- STEP 2: Admin OTP Form -->
+        <form id="admin-otp-form" class="space-y-4 hidden">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="admin-otp-input" class="block text-xs font-['Oswald'] uppercase tracking-wider text-[#F5F2EA] font-semibold">
+                Security Code
+              </label>
+              <button
+                type="button"
+                id="admin-change-phone-btn"
+                class="text-[11px] text-[#C9B27C] hover:underline"
+              >
+                Change Number
+              </button>
+            </div>
+
+            <input
+              type="text"
+              id="admin-otp-input"
+              name="otp"
+              maxlength="6"
+              required
+              placeholder="&bull; &bull; &bull; &bull; &bull; &bull;"
+              class="w-full px-4 py-3 bg-[#0A0A0A] border border-[#2E2E2E] rounded-xl text-center text-xl font-mono tracking-widest text-[#F5F2EA] placeholder-[#444444] focus:border-[#C9B27C] focus:outline-none"
+            />
+            <p class="text-[11px] text-[#A7A29A] mt-2 text-center" id="admin-otp-hint">
+              Enter the 6-digit code sent to your phone
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            id="admin-verify-btn"
+            class="w-full py-3.5 px-6 rounded-xl font-['Oswald'] text-sm uppercase font-bold tracking-wider bg-[#C9B27C] text-[#080808] hover:bg-[#D8C28E] transition-all cursor-pointer shadow-lg active:scale-95 flex items-center justify-center gap-2 mt-4"
+          >
+            <span>VERIFY & ACCESS ADMIN</span>
+          </button>
+
+          <div class="text-center pt-2">
+            <button
+              type="button"
+              id="admin-resend-btn"
+              disabled
+              class="text-xs text-[#7A756D] disabled:opacity-50 hover:text-[#C9B27C] transition-colors"
+            >
+              Resend in <span id="admin-timer">60</span>s
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 text-center text-xs text-[#555555]">
+      THE FIT MUSCLE GYM &bull; Internal Administration
+    </footer>
+
+    <!-- Script -->
+    <script>
+      import { formatPhone, sendPhoneOtp, verifyPhoneOtp, getCurrentSession, getCurrentProfile, signOut } from '../../lib/supabase';
+
+      const phoneForm = document.getElementById('admin-phone-form') as HTMLFormElement | null;
+      const otpForm = document.getElementById('admin-otp-form') as HTMLFormElement | null;
+      const phoneInput = document.getElementById('admin-phone-input') as HTMLInputElement | null;
+      const otpInput = document.getElementById('admin-otp-input') as HTMLInputElement | null;
+      const sendOtpBtn = document.getElementById('admin-send-otp-btn') as HTMLButtonElement | null;
+      const verifyBtn = document.getElementById('admin-verify-btn') as HTMLButtonElement | null;
+      const changePhoneBtn = document.getElementById('admin-change-phone-btn');
+      const resendBtn = document.getElementById('admin-resend-btn') as HTMLButtonElement | null;
+      const timerEl = document.getElementById('admin-timer');
+      const alertBox = document.getElementById('admin-alert');
+      const hintEl = document.getElementById('admin-otp-hint');
+
+      let currentPhone = '';
+      let timer: any = null;
+
+      function showAlert(msg: string, isError = true) {
+        if (!alertBox) return;
+        alertBox.textContent = msg;
+        alertBox.className = `mb-6 p-3.5 rounded-xl text-xs font-semibold text-center ${
+          isError 
+            ? 'bg-[#E53E3E]/15 border border-[#E53E3E]/40 text-[#E53E3E]' 
+            : 'bg-[#38A169]/15 border border-[#38A169]/40 text-[#38A169]'
+        }`;
+        alertBox.classList.remove('hidden');
+      }
+
+      // Check URL parameters for unauthorized error
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('error') === 'unauthorized') {
+        showAlert('Access Denied: This account is not registered as an administrator.');
+      }
+
+      // Check if already authenticated as admin
+      async function checkSession() {
+        const { session } = await getCurrentSession();
+        if (session?.user) {
+          const profile = await getCurrentProfile();
+          if (profile?.role === 'admin') {
+            window.location.href = '/admin';
+          }
+        }
+      }
+      checkSession();
+
+      phoneForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const raw = phoneInput?.value.trim() || '';
+        if (raw.length < 10) {
+          showAlert('Please enter your 10-digit registered number.');
+          return;
+        }
+
+        currentPhone = formatPhone(raw);
+        if (sendOtpBtn) {
+          sendOtpBtn.disabled = true;
+          sendOtpBtn.innerHTML = 'Sending OTP...';
+        }
+
+        const { error } = await sendPhoneOtp(currentPhone);
+        if (sendOtpBtn) {
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.innerHTML = `<span>REQUEST ADMIN OTP</span>`;
+        }
+
+        if (error) {
+          showAlert(error.message || 'Failed to send OTP.');
+          return;
+        }
+
+        showAlert(`OTP sent to ${currentPhone}.`, false);
+        phoneForm.classList.add('hidden');
+        otpForm?.classList.remove('hidden');
+        if (hintEl) hintEl.textContent = `Security code sent to ${currentPhone}`;
+        otpInput?.focus();
+
+        let sec = 60;
+        if (resendBtn) resendBtn.disabled = true;
+        clearInterval(timer);
+        timer = setInterval(() => {
+          sec--;
+          if (timerEl) timerEl.textContent = String(sec);
+          if (sec <= 0) {
+            clearInterval(timer);
+            if (resendBtn) {
+              resendBtn.disabled = false;
+              resendBtn.textContent = 'Resend Code';
+            }
+          }
+        }, 1000);
+      });
+
+      otpForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const otp = otpInput?.value.trim() || '';
+        if (otp.length < 6) {
+          showAlert('Please enter the 6-digit verification code.');
+          return;
+        }
+
+        if (verifyBtn) {
+          verifyBtn.disabled = true;
+          verifyBtn.innerHTML = 'Verifying Role...';
+        }
+
+        const { data, error } = await verifyPhoneOtp(currentPhone, otp);
+        if (error) {
+          if (verifyBtn) {
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<span>VERIFY & ACCESS ADMIN</span>';
+          }
+          showAlert(error.message || 'Invalid or expired OTP.');
+          return;
+        }
+
+        // Verify role
+        const profile = await getCurrentProfile();
+        if (profile?.role !== 'admin') {
+          await signOut();
+          if (verifyBtn) {
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = '<span>VERIFY & ACCESS ADMIN</span>';
+          }
+          showAlert('Access Denied: Your account does not have administrator privileges.');
+          return;
+        }
+
+        showAlert('Admin verified. Loading console...', false);
+        setTimeout(() => {
+          window.location.href = '/admin';
+        }, 500);
+      });
+
+      changePhoneBtn?.addEventListener('click', () => {
+        otpForm?.classList.add('hidden');
+        phoneForm?.classList.remove('hidden');
+        alertBox?.classList.add('hidden');
+        clearInterval(timer);
+        phoneInput?.focus();
+      });
+
+      resendBtn?.addEventListener('click', async () => {
+        if (!currentPhone) return;
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+        const { error } = await sendPhoneOtp(currentPhone);
+        if (error) {
+          showAlert(error.message || 'Failed to resend OTP.');
+          resendBtn.disabled = false;
+        } else {
+          showAlert(`New OTP sent to ${currentPhone}`, false);
+        }
+      });
+    </script>
+  </body>
+</html>
